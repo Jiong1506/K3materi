@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>K3 Blossom Cloud | Girly Edition</title>
+    <title>Materi K3 Cloud | Girly Edition</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;500;700&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
@@ -17,7 +17,7 @@
             --white: #ffffff;
             --text: #5a4a5a;
             --card-bg: #ffffff;
-            --sidebar-bg: rgba(255, 255, 255, 0.85);
+            --sidebar-bg: rgba(255, 255, 255, 0.95);
             --shadow-sm: rgba(0, 0, 0, 0.05);
             --shadow-md: rgba(0, 0, 0, 0.08);
             --shadow-lg: rgba(0, 0, 0, 0.12);
@@ -38,7 +38,7 @@
             --white: #1e293b;
             --text: #e2e8f0;
             --card-bg: #334155;
-            --sidebar-bg: rgba(30, 41, 59, 0.9);
+            --sidebar-bg: rgba(30, 41, 59, 0.95);
             --shadow-sm: rgba(0, 0, 0, 0.3);
             --shadow-md: rgba(0, 0, 0, 0.4);
             --shadow-lg: rgba(0, 0, 0, 0.5);
@@ -76,76 +76,102 @@
             letter-spacing: -0.02em;
         }
 
-        /* ===== THEME TOGGLE - IMPROVED ===== */
-        .theme-toggle {
-            position: fixed;
-            top: 24px;
-            right: 24px;
-            z-index: 9999;
-            background: var(--white);
+        /* ===== IMPROVED THEME TOGGLE IN SIDEBAR ===== */
+        .theme-toggle-sidebar {
+            background: linear-gradient(135deg, var(--hot-pink), var(--purple));
+            color: white;
             border-radius: 50px;
-            width: 56px;
-            height: 56px;
+            width: 120px;
+            height: 40px;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             cursor: pointer;
-            border: 2px solid var(--hot-pink);
-            box-shadow: 0 8px 24px var(--shadow-md);
+            border: 2px solid var(--white);
+            box-shadow: 0 4px 12px var(--shadow-md);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            margin: 0 auto 30px;
             overflow: hidden;
         }
 
-        .theme-toggle:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 12px 32px var(--shadow-lg);
-            border-color: var(--purple);
+        .theme-toggle-sidebar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--shadow-lg);
         }
 
-        .theme-toggle:active {
-            transform: translateY(-1px) scale(1.02);
+        .theme-toggle-sidebar:active {
+            transform: translateY(0);
         }
 
-        .theme-toggle i {
+        .theme-icon {
+            width: 50%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            transition: all 0.4s ease;
+        }
+
+        .theme-icon i {
+            font-size: 1.1rem;
+            transition: all 0.4s ease;
+        }
+
+        .theme-toggle-sidebar .fa-sun {
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .theme-toggle-sidebar .fa-moon {
+            color: #E2E8F0;
+            text-shadow: 0 0 10px rgba(226, 232, 240, 0.5);
+        }
+
+        .theme-slider {
             position: absolute;
-            font-size: 1.4rem;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            color: var(--hot-pink);
+            top: 2px;
+            left: 2px;
+            width: 56px;
+            height: 34px;
+            background: var(--white);
+            border-radius: 50px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1;
+            box-shadow: 0 2px 8px var(--shadow-md);
         }
 
-        /* Sun icon - visible in light mode */
-        .theme-toggle .fa-sun {
-            opacity: 0;
-            transform: scale(0) rotate(-180deg);
+        [data-theme="dark"] .theme-slider {
+            transform: translateX(60px);
         }
 
-        /* Moon icon - visible in dark mode */
-        .theme-toggle .fa-moon {
-            opacity: 1;
-            transform: scale(1) rotate(0deg);
+        .theme-icon.active {
+            transform: scale(1.1);
         }
 
-        /* Dark mode styles */
-        [data-theme="dark"] .theme-toggle .fa-sun {
-            opacity: 1;
-            transform: scale(1) rotate(0deg);
-            color: #FFD700; /* Gold color for sun in dark mode */
+        .theme-icon.inactive {
+            opacity: 0.7;
+            transform: scale(0.9);
         }
 
-        [data-theme="dark"] .theme-toggle .fa-moon {
-            opacity: 0;
-            transform: scale(0) rotate(180deg);
+        [data-theme="dark"] .theme-icon:nth-child(1) {
+            transform: scale(0.9);
+            opacity: 0.7;
         }
 
-        /* Animation for theme toggle */
-        @keyframes sunRise {
-            0% { transform: scale(0) rotate(-90deg); opacity: 0; }
-            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        [data-theme="dark"] .theme-icon:nth-child(2) {
+            transform: scale(1.1);
         }
 
-        @keyframes moonRise {
-            0% { transform: scale(0) rotate(90deg); opacity: 0; }
-            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        [data-theme="light"] .theme-icon:nth-child(1) {
+            transform: scale(1.1);
+        }
+
+        [data-theme="light"] .theme-icon:nth-child(2) {
+            transform: scale(0.9);
+            opacity: 0.7;
         }
 
         /* ===== SIDEBAR ===== */
@@ -157,7 +183,7 @@
             border-right: 2px solid rgba(255, 77, 148, 0.1);
             display: flex;
             flex-direction: column;
-            padding: 32px 20px;
+            padding: 30px 20px;
             transition: all 0.3s ease;
             z-index: 1000;
             flex-shrink: 0;
@@ -167,7 +193,7 @@
             font-size: 2rem;
             color: var(--hot-pink);
             text-align: center;
-            margin-bottom: 48px;
+            margin-bottom: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -185,24 +211,42 @@
             background-clip: text;
         }
 
+        /* ===== SIDEBAR LAYOUT IMPROVEMENT ===== */
+        .sidebar-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex: 1;
+        }
+
+        .menu-row {
+            display: flex;
+            justify-content: center; /* Perbaikan: dari space-between ke center */
+            align-items: center;
+            gap: 12px; /* Tambah gap yang konsisten */
+        }
+
         .menu-item {
-            padding: 18px 24px;
+            flex: 1;
+            padding: 15px 12px; /* Kurangi padding horizontal */
             border-radius: 16px;
-            margin-bottom: 8px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 16px;
+            justify-content: center; /* Pastikan konten rata tengah */
+            gap: 8px; /* Kurangi gap antara ikon dan teks */
             font-weight: 600;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             color: var(--text);
             border: 2px solid transparent;
             background: transparent;
+            text-align: center;
+            min-width: 0; /* Perbaikan untuk text-overflow */
         }
 
         .menu-item:hover {
             background: rgba(255, 77, 148, 0.08);
-            transform: translateX(8px);
+            transform: translateY(-2px);
             color: var(--hot-pink);
         }
 
@@ -211,32 +255,80 @@
             color: white;
             box-shadow: 0 8px 24px rgba(255, 77, 148, 0.2);
             border-color: rgba(255, 255, 255, 0.1);
-            transform: translateX(8px);
+            transform: translateY(-2px);
         }
 
         .menu-item i {
             width: 20px;
             text-align: center;
             font-size: 1.1rem;
+            flex-shrink: 0; /* Mencegah ikon menyusut */
         }
 
         .menu-item span {
             flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis; /* Jika teks terlalu panjang */
         }
 
-        /* ===== UPLOAD BUTTON - SANGAT JELAS ===== */
+        /* Admin menu items */
+        .admin-menu-item {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 16px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--text);
+            border: 2px solid transparent;
+            background: transparent;
+        }
+
+        .admin-menu-item:hover {
+            background: rgba(255, 77, 148, 0.08);
+            transform: translateX(8px);
+            color: var(--hot-pink);
+        }
+
+        .admin-menu-item.active {
+            background: linear-gradient(135deg, var(--hot-pink), var(--purple));
+            color: white;
+            box-shadow: 0 8px 24px rgba(255, 77, 148, 0.2);
+            border-color: rgba(255, 255, 255, 0.1);
+            transform: translateX(8px);
+        }
+
+        .admin-logout {
+            margin-top: auto;
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+            border: 2px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .admin-logout:hover {
+            background: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+
+        /* ===== UPLOAD BUTTON ===== */
         .upload-btn-main {
             background: linear-gradient(135deg, var(--hot-pink), var(--purple));
             color: white;
             border: none;
-            padding: 20px 32px;
+            padding: 18px 28px;
             border-radius: 16px;
             font-weight: 700;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 12px;
-            font-size: 1.125rem;
+            font-size: 1.1rem;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 12px 32px rgba(255, 77, 148, 0.3);
             position: relative;
@@ -853,29 +945,79 @@
                 display: none;
             }
             
-            .menu-container {
-                display: flex;
+            .sidebar-content {
+                flex-direction: row;
                 width: 100%;
+                align-items: center;
                 justify-content: space-around;
+                gap: 0;
+            }
+            
+            .theme-toggle-sidebar {
+                width: 60px;
+                height: 60px;
+                margin: 0;
+                border-radius: 50%;
+                order: 2;
+            }
+            
+            .theme-slider {
+                display: none;
+            }
+            
+            .theme-icon {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+            }
+            
+            .theme-toggle-sidebar .fa-sun,
+            .theme-toggle-sidebar .fa-moon {
+                font-size: 1.3rem;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            
+            .menu-row {
+                flex: 2;
+                gap: 5px;
             }
             
             .menu-item {
-                flex: 1;
-                flex-direction: column;
-                padding: 12px 8px;
-                font-size: 0.75rem;
-                gap: 8px;
+                padding: 10px 8px;
+                font-size: 0.7rem;
+                gap: 5px;
                 border-radius: 12px;
-                margin: 0 4px;
+                flex-direction: column;
             }
             
             .menu-item i {
-                font-size: 1.25rem;
+                font-size: 1rem;
+            }
+            
+            .admin-menu-item {
+                flex-direction: column;
+                padding: 10px 5px;
+                font-size: 0.7rem;
+                gap: 5px;
+                margin-bottom: 5px;
+                text-align: center;
+            }
+            
+            .admin-menu-item i {
+                font-size: 1rem;
+            }
+            
+            .admin-menu-item:hover,
+            .admin-menu-item.active {
+                transform: translateY(-2px);
             }
             
             main {
                 padding: 24px 20px;
-                padding-bottom: 120px;
+                padding-bottom: 100px;
             }
             
             .page-header {
@@ -892,14 +1034,15 @@
             .upload-btn-main {
                 width: 100%;
                 justify-content: center;
-                padding: 20px;
+                padding: 16px 20px;
+                font-size: 1rem;
             }
             
             .fab {
-                bottom: 100px;
+                bottom: 90px;
                 right: 20px;
-                width: 64px;
-                height: 64px;
+                width: 60px;
+                height: 60px;
                 font-size: 1.75rem;
             }
             
@@ -914,42 +1057,42 @@
             }
             
             .toolbar button {
-                width: 44px;
-                height: 44px;
+                width: 42px;
+                height: 42px;
+                font-size: 1rem;
             }
             
             .rich-editor {
-                padding: 24px;
+                padding: 20px;
                 min-height: 300px;
+                font-size: 1rem;
             }
             
             .file-upload-area {
-                padding: 32px 24px;
+                padding: 24px 16px;
             }
             
             .file-upload-area i {
                 font-size: 2.5rem;
             }
             
+            .file-upload-area h3 {
+                font-size: 1.2rem;
+            }
+            
             .modal-box {
-                padding: 40px 24px;
+                padding: 32px 20px;
                 border-radius: 24px;
             }
             
             .pin-input {
                 font-size: 2rem;
                 padding: 20px;
+                letter-spacing: 8px;
             }
             
             #detailOverlay {
                 padding: 24px;
-            }
-            
-            .theme-toggle {
-                top: 16px;
-                right: 16px;
-                width: 48px;
-                height: 48px;
             }
         }
 
@@ -959,42 +1102,33 @@
                 gap: 20px;
             }
             
-            .theme-toggle {
-                top: 12px;
-                right: 12px;
-                width: 44px;
-                height: 44px;
+            .theme-toggle-sidebar {
+                width: 50px;
+                height: 50px;
             }
             
-            .theme-toggle i {
-                font-size: 1.2rem;
+            .menu-item {
+                font-size: 0.65rem;
+                padding: 8px 4px;
+            }
+            
+            .menu-item i {
+                font-size: 0.9rem;
+            }
+            
+            .admin-menu-item {
+                font-size: 0.65rem;
+                padding: 8px 4px;
+            }
+            
+            .fab {
+                bottom: 80px;
+                right: 16px;
+                width: 56px;
+                height: 56px;
+                font-size: 1.5rem;
             }
         }
-
-        /* ===== UTILITIES ===== */
-        .flex-center {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .flex-between {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .flex-column {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .gap-4 { gap: 16px; }
-        .gap-8 { gap: 32px; }
-        .mb-4 { margin-bottom: 16px; }
-        .mb-8 { margin-bottom: 32px; }
-        .mt-4 { margin-top: 16px; }
-        .mt-8 { margin-top: 32px; }
 
         /* ===== SCROLLBAR ===== */
         ::-webkit-scrollbar {
@@ -1033,43 +1167,61 @@
         </div>
     </div>
 
-    <!-- THEME TOGGLE - IMPROVED -->
-    <div class="theme-toggle" onclick="toggleTheme()">
-        <i class="fas fa-moon"></i>
-        <i class="fas fa-sun"></i>
-    </div>
-
     <!-- SIDEBAR -->
     <aside id="mainSidebar">
         <div class="brand">
             <i class="fas fa-cloud"></i>
-            <span>K3 Blossom</span>
+            <span>Materi K3</span>
         </div>
         
-        <div class="menu-container">
+        <div class="sidebar-content">
+            <!-- Public Menu -->
             <div id="publicMenu">
-                <div class="menu-item active" onclick="showView('home', this)">
-                    <i class="fas fa-home"></i> 
-                    <span>Dashboard</span>
+                <div class="theme-toggle-sidebar" onclick="toggleTheme()">
+                    <div class="theme-slider"></div>
+                    <div class="theme-icon">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                    <div class="theme-icon">
+                        <i class="fas fa-moon"></i>
+                    </div>
                 </div>
-                <div class="menu-item" onclick="openPin()">
-                    <i class="fas fa-lock"></i> 
-                    <span>Admin</span>
+                
+                <div class="menu-row">
+                    <div class="menu-item active" onclick="showView('home', this)">
+                        <i class="fas fa-home"></i> 
+                        <span>Dashboard</span>
+                    </div>
+                    <div class="menu-item" onclick="openPin()">
+                        <i class="fas fa-heart"></i> 
+                        <span>Admin Area</span>
+                    </div>
                 </div>
             </div>
 
-            <div id="adminMenu" style="display: none;">
-                <div class="menu-item" onclick="showView('home', this)">
+            <!-- Admin Menu -->
+            <div id="adminMenu" style="display: none; flex-direction: column; gap: 8px;">
+                <div class="theme-toggle-sidebar" onclick="toggleTheme()">
+                    <div class="theme-slider"></div>
+                    <div class="theme-icon">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                    <div class="theme-icon">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                </div>
+                
+                <div class="admin-menu-item" onclick="showView('home', this)">
                     <i class="fas fa-th-large"></i> 
                     <span>Dashboard</span>
                 </div>
-                <div class="menu-item" onclick="showView('manage', this)">
-                    <i class="fas fa-cog"></i> 
-                    <span>Kelola</span>
+                <div class="admin-menu-item" onclick="showView('manage', this)">
+                    <i class="fas fa-magic"></i> 
+                    <span>Kelola Materi</span>
                 </div>
-                <div class="menu-item" onclick="logoutAdmin()">
+                <div class="admin-menu-item admin-logout" onclick="logoutAdmin()">
                     <i class="fas fa-sign-out-alt"></i> 
-                    <span>Logout</span>
+                    <span>Logout Admin</span>
                 </div>
             </div>
         </div>
@@ -1081,8 +1233,7 @@
         <section id="view-home" class="view active">
             <div class="page-header">
                 <div>
-                    <h1>🌸 Selamat Datang, K3! 🍓</h1>
-                    <p>Tempat belajar yang menyenangkan dan penuh warna</p>
+                    <h1>🌸 Selamat Datang 🌸</h1>
                 </div>
                 <button class="upload-btn-main" onclick="handleHomeUpload()" id="homeUploadBtn">
                     <i class="fas fa-cloud-upload-alt"></i> 
@@ -1096,8 +1247,8 @@
         <section id="view-manage" class="view">
             <div class="page-header">
                 <div>
-                    <h1>📚 Kelola Materi 🧁</h1>
-                    <p>Kelola semua materi pembelajaran dengan mudah</p>
+                    <h1>🌸 Kelola Materi 🌸</h1>
+                    <p>Kelola semua materi pembelajaran disini</p>
                 </div>
                 <button class="upload-btn-main" onclick="prepareAdd()">
                     <i class="fas fa-plus-circle"></i> 
@@ -1154,7 +1305,7 @@
                     <p id="fileName" style="margin-top: 16px; color: var(--hot-pink); font-weight: 600;"></p>
                 </div>
 
-                <div class="flex-column gap-8 mt-8">
+                <div style="display: flex; flex-direction: column; gap: 20px; margin-top: 40px;">
                     <button class="btn-girly" onclick="saveData()">
                         <i class="fas fa-save"></i> Simpan Materi
                     </button>
@@ -1197,43 +1348,26 @@
             const currentTheme = document.documentElement.getAttribute('data-theme');
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             
-            // Add animation to toggle button
-            const themeToggle = document.querySelector('.theme-toggle');
-            themeToggle.style.transform = 'scale(0.9) rotate(180deg)';
+            // Smooth transition animation
+            document.documentElement.style.transition = 'all 0.5s ease';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('k3_theme', newTheme);
             
             setTimeout(() => {
-                document.documentElement.setAttribute('data-theme', newTheme);
-                localStorage.setItem('k3_theme', newTheme);
-                
-                // Update icon animation
-                updateThemeIcon(newTheme);
-                
-                // Reset toggle button animation
-                setTimeout(() => {
-                    themeToggle.style.transform = 'scale(1) rotate(0deg)';
-                }, 150);
-            }, 200);
-        }
-
-        function updateThemeIcon(theme) {
-            const moonIcon = document.querySelector('.fa-moon');
-            const sunIcon = document.querySelector('.fa-sun');
+                document.documentElement.style.transition = '';
+            }, 500);
             
-            if (theme === 'dark') {
-                // Animate sun rising
-                sunIcon.style.animation = 'sunRise 0.5s ease forwards';
-                moonIcon.style.animation = 'none';
-            } else {
-                // Animate moon rising
-                moonIcon.style.animation = 'moonRise 0.5s ease forwards';
-                sunIcon.style.animation = 'none';
-            }
+            // Add click animation
+            const toggleBtn = event.currentTarget;
+            toggleBtn.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                toggleBtn.style.transform = 'scale(1)';
+            }, 150);
         }
 
         function loadTheme() {
             const savedTheme = localStorage.getItem('k3_theme') || 'light';
             document.documentElement.setAttribute('data-theme', savedTheme);
-            updateThemeIcon(savedTheme);
         }
 
         // ===== NAVIGATION =====
@@ -1247,6 +1381,7 @@
             // Update menu active state
             if(el) {
                 document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+                document.querySelectorAll('.admin-menu-item').forEach(m => m.classList.remove('active'));
                 el.classList.add('active');
             }
             
@@ -1278,7 +1413,7 @@
             } else {
                 homeUploadBtn.onclick = () => openPin();
                 homeUploadBtn.innerHTML = '<i class="fas fa-lock"></i><span>ADMIN UPLOAD</span>';
-                homeUploadBtn.style.background = 'linear-gradient(135deg, #6b7280, #4b5563)';
+                homeUploadBtn.style.background = 'linear-gradient(135deg, var(--purple), var(--hot-pink))';
             }
         }
 
@@ -1303,7 +1438,7 @@
                 document.getElementById('adminMenu').style.display = 'flex';
                 updateFABVisibility('home');
                 closePin();
-                showView('manage', document.querySelectorAll('#adminMenu .menu-item')[1]);
+                showView('manage', document.querySelectorAll('#adminMenu .admin-menu-item')[1]);
                 render();
                 
                 // Show success notification
@@ -1323,7 +1458,7 @@
 
         function logoutAdmin() {
             isAdmin = false;
-            document.getElementById('publicMenu').style.display = 'flex';
+            document.getElementById('publicMenu').style.display = 'block';
             document.getElementById('adminMenu').style.display = 'none';
             updateFABVisibility('home');
             showView('home', document.querySelector('#publicMenu .menu-item'));
@@ -1698,14 +1833,6 @@
                 10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
                 20%, 40%, 60%, 80% { transform: translateX(5px); }
             }
-            @keyframes sunRise {
-                0% { transform: scale(0) rotate(-180deg); opacity: 0; }
-                100% { transform: scale(1) rotate(0deg); opacity: 1; }
-            }
-            @keyframes moonRise {
-                0% { transform: scale(0) rotate(180deg); opacity: 0; }
-                100% { transform: scale(1) rotate(0deg); opacity: 1; }
-            }
         `;
         document.head.appendChild(style);
 
@@ -1755,26 +1882,8 @@
                 }
             });
             
-            // Initialize with sample data if empty
             if(db.length === 0) {
-                db = [
-                    {
-                        id: 1,
-                        title: "Selamat Datang di K3 Blossom! 🌸",
-                        content: `<h3 style="color: var(--hot-pink); margin-bottom: 16px;">Halo Teman K3!</h3>
-                                  <p style="margin-bottom: 16px;">Ini adalah platform belajar khusus untuk kalian. Fitur yang tersedia:</p>
-                                  <ul style="margin-left: 24px; margin-bottom: 16px;">
-                                      <li><span style="color: var(--hot-pink); margin-right: 8px;">•</span> Materi pembelajaran yang menarik</li>
-                                      <li><span style="color: var(--hot-pink); margin-right: 8px;">•</span> Tampilan yang cantik dan modern</li>
-                                      <li><span style="color: var(--hot-pink); margin-right: 8px;">•</span> Mode gelap/terang yang nyaman</li>
-                                      <li><span style="color: var(--hot-pink); margin-right: 8px;">•</span> Manajemen materi yang mudah</li>
-                                  </ul>
-                                  <p>Selamat belajar dan semoga sukses! 💖</p>`,
-                        image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2000",
-                        createdAt: new Date().toISOString(),
-                        updatedAt: new Date().toISOString()
-                    }
-                ];
+                db = []; // Menghapus semua objek di dalam kurung siku
                 localStorage.setItem('k3_blossom_db', JSON.stringify(db));
                 render();
             }
