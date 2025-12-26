@@ -191,31 +191,53 @@
             text-overflow: ellipsis;
         }
 
-        /* Theme Toggle Horizontal */
-        .theme-toggle-row {
+        /* Theme Toggle as Menu Item */
+        .theme-toggle-item {
+            flex: 1;
+            padding: 14px 12px;
+            border-radius: 16px;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
-            padding: 12px;
-            border-radius: 16px;
-            background: rgba(255, 77, 148, 0.05);
-            border: 2px solid rgba(255, 77, 148, 0.1);
-            margin-top: auto;
-        }
-
-        .theme-toggle-label {
+            gap: 12px;
             font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             color: var(--text);
-            flex-shrink: 0;
+            border: 2px solid transparent;
+            background: transparent;
+            min-width: 0;
+            position: relative;
         }
 
-        .theme-toggle-sidebar {
+        .theme-toggle-item:hover {
+            background: rgba(255, 77, 148, 0.08);
+            transform: translateX(8px);
+            color: var(--hot-pink);
+        }
+
+        .theme-toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            gap: 12px;
+        }
+
+        .theme-toggle-icon {
+            width: 24px;
+            text-align: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            color: var(--hot-pink);
+        }
+
+        .theme-toggle-switch {
             background: linear-gradient(135deg, var(--hot-pink), var(--purple));
             color: white;
             border-radius: 50px;
-            width: 70px;
-            height: 32px;
+            width: 60px;
+            height: 30px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -226,62 +248,64 @@
             position: relative;
             overflow: hidden;
             flex-shrink: 0;
+            padding: 0 5px;
         }
 
-        .theme-toggle-sidebar:hover {
+        .theme-toggle-switch:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 20px var(--shadow-lg);
         }
 
-        .theme-icon {
-            width: 50%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
+        .theme-toggle-switch i {
+            font-size: 0.8rem;
             z-index: 2;
+            position: relative;
             transition: all 0.4s ease;
         }
 
-        .theme-icon i {
-            font-size: 0.9rem;
-            transition: all 0.4s ease;
+        .theme-toggle-switch .fa-sun {
+            color: #FFD700;
         }
 
-        .theme-slider {
+        .theme-toggle-switch .fa-moon {
+            color: #E2E8F0;
+        }
+
+        .theme-toggle-slider {
             position: absolute;
             top: 2px;
             left: 2px;
-            width: 28px;
-            height: 26px;
+            width: 24px;
+            height: 24px;
             background: var(--white);
-            border-radius: 50px;
+            border-radius: 50%;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 1;
             box-shadow: 0 2px 8px var(--shadow-md);
         }
 
-        [data-theme="dark"] .theme-slider {
-            transform: translateX(38px);
+        [data-theme="dark"] .theme-toggle-slider {
+            transform: translateX(30px);
         }
 
-        [data-theme="dark"] .theme-icon:nth-child(1) {
-            transform: scale(0.9);
+        [data-theme="dark"] .theme-toggle-switch .fa-sun {
             opacity: 0.7;
+            transform: scale(0.9);
         }
 
-        [data-theme="dark"] .theme-icon:nth-child(2) {
+        [data-theme="dark"] .theme-toggle-switch .fa-moon {
+            opacity: 1;
             transform: scale(1.1);
         }
 
-        [data-theme="light"] .theme-icon:nth-child(1) {
+        [data-theme="light"] .theme-toggle-switch .fa-sun {
+            opacity: 1;
             transform: scale(1.1);
         }
 
-        [data-theme="light"] .theme-icon:nth-child(2) {
-            transform: scale(0.9);
+        [data-theme="light"] .theme-toggle-switch .fa-moon {
             opacity: 0.7;
+            transform: scale(0.9);
         }
 
         /* Admin menu items */
@@ -966,53 +990,13 @@
                 gap: 0;
             }
             
-            .theme-toggle-row {
-                flex-direction: column;
-                padding: 8px;
-                margin-top: 0;
-            }
-            
-            .theme-toggle-label {
-                font-size: 0.7rem;
-            }
-            
-            .theme-toggle-sidebar {
-                width: 60px;
-                height: 60px;
-                border-radius: 50%;
-            }
-            
-            .theme-slider {
-                display: none;
-            }
-            
-            .theme-icon {
-                width: 100%;
-                height: 100%;
-                position: absolute;
-            }
-            
-            .theme-toggle-sidebar .fa-sun,
-            .theme-toggle-sidebar .fa-moon {
-                font-size: 1.3rem;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-            }
-            
             .menu-horizontal {
                 flex-direction: row;
                 gap: 5px;
                 margin-bottom: 0;
             }
             
-            .menu-row {
-                flex: 2;
-                gap: 5px;
-            }
-            
-            .menu-item, .admin-menu-item {
+            .menu-item, .admin-menu-item, .theme-toggle-item {
                 padding: 10px 8px;
                 font-size: 0.7rem;
                 gap: 5px;
@@ -1021,8 +1005,31 @@
                 text-align: center;
             }
             
-            .menu-item i, .admin-menu-item i {
+            .menu-item i, .admin-menu-item i, .theme-toggle-icon {
                 font-size: 1rem;
+            }
+            
+            .theme-toggle-container {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .theme-toggle-switch {
+                width: 50px;
+                height: 25px;
+            }
+            
+            .theme-toggle-slider {
+                width: 19px;
+                height: 19px;
+            }
+            
+            [data-theme="dark"] .theme-toggle-slider {
+                transform: translateX(25px);
+            }
+            
+            .theme-toggle-switch i {
+                font-size: 0.7rem;
             }
             
             .admin-menu-item {
@@ -1125,17 +1132,26 @@
                 gap: 20px;
             }
             
-            .theme-toggle-sidebar {
-                width: 50px;
-                height: 50px;
+            .theme-toggle-switch {
+                width: 45px;
+                height: 22px;
             }
             
-            .menu-item, .admin-menu-item {
+            .theme-toggle-slider {
+                width: 16px;
+                height: 16px;
+            }
+            
+            [data-theme="dark"] .theme-toggle-slider {
+                transform: translateX(23px);
+            }
+            
+            .menu-item, .admin-menu-item, .theme-toggle-item {
                 font-size: 0.65rem;
                 padding: 8px 4px;
             }
             
-            .menu-item i, .admin-menu-item i {
+            .menu-item i, .admin-menu-item i, .theme-toggle-icon {
                 font-size: 0.9rem;
             }
             
@@ -1204,17 +1220,16 @@
                         <i class="fas fa-heart"></i> 
                         <span>Admin Area</span>
                     </div>
-                </div>
-                
-                <div class="theme-toggle-row">
-                    <span class="theme-toggle-label">Tema:</span>
-                    <div class="theme-toggle-sidebar" onclick="toggleTheme()">
-                        <div class="theme-slider"></div>
-                        <div class="theme-icon">
-                            <i class="fas fa-sun"></i>
-                        </div>
-                        <div class="theme-icon">
-                            <i class="fas fa-moon"></i>
+                    <div class="theme-toggle-item" onclick="toggleTheme()">
+                        <div class="theme-toggle-container">
+                            <div class="theme-toggle-icon">
+                                <i class="fas fa-adjust"></i>
+                            </div>
+                            <div class="theme-toggle-switch">
+                                <i class="fas fa-sun"></i>
+                                <i class="fas fa-moon"></i>
+                                <div class="theme-toggle-slider"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1235,17 +1250,16 @@
                         <i class="fas fa-sign-out-alt"></i> 
                         <span>Logout Admin</span>
                     </div>
-                </div>
-                
-                <div class="theme-toggle-row">
-                    <span class="theme-toggle-label">Tema:</span>
-                    <div class="theme-toggle-sidebar" onclick="toggleTheme()">
-                        <div class="theme-slider"></div>
-                        <div class="theme-icon">
-                            <i class="fas fa-sun"></i>
-                        </div>
-                        <div class="theme-icon">
-                            <i class="fas fa-moon"></i>
+                    <div class="theme-toggle-item" onclick="toggleTheme()">
+                        <div class="theme-toggle-container">
+                            <div class="theme-toggle-icon">
+                                <i class="fas fa-adjust"></i>
+                            </div>
+                            <div class="theme-toggle-switch">
+                                <i class="fas fa-sun"></i>
+                                <i class="fas fa-moon"></i>
+                                <div class="theme-toggle-slider"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1384,10 +1398,10 @@
             }, 500);
             
             // Add click animation
-            const toggleBtn = event.currentTarget;
-            toggleBtn.style.transform = 'scale(0.95)';
+            const toggleItem = event.currentTarget;
+            toggleItem.style.transform = 'scale(0.95)';
             setTimeout(() => {
-                toggleBtn.style.transform = 'scale(1)';
+                toggleItem.style.transform = 'scale(1)';
             }, 150);
         }
 
