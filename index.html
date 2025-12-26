@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Materi K3 Cloud | Girly Edition</title>
+    <title>Cloud Materi K3</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;500;700&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
     
@@ -134,26 +134,19 @@
         .menu-horizontal {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .menu-row {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            width: 100%;
+            gap: 10px;
+            margin-bottom: 10px;
         }
 
         .menu-item {
-            flex: 1;
-            padding: 14px 12px;
+            width: 100%;
+            padding: 14px 16px;
             border-radius: 16px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: flex-start;
-            gap: 12px;
+            gap: 15px;
             font-weight: 600;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             color: var(--text);
@@ -191,23 +184,23 @@
             text-overflow: ellipsis;
         }
 
-        /* Theme Toggle as Menu Item */
+        /* Theme Toggle Item */
         .theme-toggle-item {
-            flex: 1;
-            padding: 14px 12px;
+            width: 100%;
+            padding: 14px 16px;
             border-radius: 16px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 12px;
+            justify-content: space-between;
+            gap: 15px;
             font-weight: 600;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             color: var(--text);
             border: 2px solid transparent;
             background: transparent;
+            text-align: left;
             min-width: 0;
-            position: relative;
         }
 
         .theme-toggle-item:hover {
@@ -216,12 +209,17 @@
             color: var(--hot-pink);
         }
 
-        .theme-toggle-container {
+        .theme-toggle-content {
             display: flex;
             align-items: center;
             justify-content: space-between;
             width: 100%;
-            gap: 12px;
+        }
+
+        .theme-toggle-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
         .theme-toggle-icon {
@@ -232,9 +230,14 @@
             color: var(--hot-pink);
         }
 
+        .theme-toggle-label {
+            font-weight: 600;
+            color: var(--text);
+            white-space: nowrap;
+        }
+
         .theme-toggle-switch {
             background: linear-gradient(135deg, var(--hot-pink), var(--purple));
-            color: white;
             border-radius: 50px;
             width: 60px;
             height: 30px;
@@ -249,11 +252,6 @@
             overflow: hidden;
             flex-shrink: 0;
             padding: 0 5px;
-        }
-
-        .theme-toggle-switch:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px var(--shadow-lg);
         }
 
         .theme-toggle-switch i {
@@ -311,13 +309,13 @@
         /* Admin menu items */
         .admin-menu-item {
             width: 100%;
-            padding: 14px 12px;
+            padding: 14px 16px;
             border-radius: 16px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: flex-start;
-            gap: 12px;
+            gap: 15px;
             font-weight: 600;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             color: var(--text);
@@ -341,7 +339,7 @@
         }
 
         .admin-logout {
-            margin-top: 10px;
+            margin-top: 5px;
             background: rgba(239, 68, 68, 0.1);
             color: var(--danger);
             border: 2px solid rgba(239, 68, 68, 0.2);
@@ -994,29 +992,43 @@
                 flex-direction: row;
                 gap: 5px;
                 margin-bottom: 0;
+                flex: 1;
             }
             
             .menu-item, .admin-menu-item, .theme-toggle-item {
                 padding: 10px 8px;
                 font-size: 0.7rem;
-                gap: 5px;
+                gap: 8px;
                 border-radius: 12px;
                 flex-direction: column;
                 text-align: center;
+                height: 70px;
+                justify-content: center;
             }
             
             .menu-item i, .admin-menu-item i, .theme-toggle-icon {
                 font-size: 1rem;
+                margin-bottom: 2px;
             }
             
-            .theme-toggle-container {
+            .theme-toggle-content {
                 flex-direction: column;
                 gap: 5px;
+            }
+            
+            .theme-toggle-left {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .theme-toggle-label {
+                font-size: 0.65rem;
             }
             
             .theme-toggle-switch {
                 width: 50px;
                 height: 25px;
+                margin-top: 3px;
             }
             
             .theme-toggle-slider {
@@ -1149,6 +1161,7 @@
             .menu-item, .admin-menu-item, .theme-toggle-item {
                 font-size: 0.65rem;
                 padding: 8px 4px;
+                height: 65px;
             }
             
             .menu-item i, .admin-menu-item i, .theme-toggle-icon {
@@ -1221,9 +1234,10 @@
                         <span>Admin Area</span>
                     </div>
                     <div class="theme-toggle-item" onclick="toggleTheme()">
-                        <div class="theme-toggle-container">
-                            <div class="theme-toggle-icon">
-                                <i class="fas fa-adjust"></i>
+                        <div class="theme-toggle-content">
+                            <div class="theme-toggle-left">
+                                <i class="fas fa-adjust theme-toggle-icon"></i>
+                                <span class="theme-toggle-label">Tema</span>
                             </div>
                             <div class="theme-toggle-switch">
                                 <i class="fas fa-sun"></i>
@@ -1251,9 +1265,10 @@
                         <span>Logout Admin</span>
                     </div>
                     <div class="theme-toggle-item" onclick="toggleTheme()">
-                        <div class="theme-toggle-container">
-                            <div class="theme-toggle-icon">
-                                <i class="fas fa-adjust"></i>
+                        <div class="theme-toggle-content">
+                            <div class="theme-toggle-left">
+                                <i class="fas fa-adjust theme-toggle-icon"></i>
+                                <span class="theme-toggle-label">Tema</span>
                             </div>
                             <div class="theme-toggle-switch">
                                 <i class="fas fa-sun"></i>
