@@ -6,6 +6,16 @@
     <title>Materi K3 Cloud | Girly Edition</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;500;700&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Inisialisasi Supabase
+        const supabaseUrl = 'https://dwelrsjjilxmsopxfaem.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3ZWxyc2pqaWx4bXNvcHhmYWVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY2ODgyNjYsImV4cCI6MjA4MjI2NDI2Nn0.kIYoIRXf5KEZq7RvDtDqTrxgZVg9RgBSbxivhfEdXFE';
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+    </script>
+
     <style>
         /* ===== VARIABLES ===== */
         :root {
@@ -76,105 +86,7 @@
             letter-spacing: -0.02em;
         }
 
-        /* ===== IMPROVED THEME TOGGLE IN SIDEBAR ===== */
-        .theme-toggle-sidebar {
-            background: linear-gradient(135deg, var(--hot-pink), var(--purple));
-            color: white;
-            border-radius: 50px;
-            width: 120px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            border: 2px solid var(--white);
-            box-shadow: 0 4px 12px var(--shadow-md);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            margin: 0 auto 30px;
-            overflow: hidden;
-        }
-
-        .theme-toggle-sidebar:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px var(--shadow-lg);
-        }
-
-        .theme-toggle-sidebar:active {
-            transform: translateY(0);
-        }
-
-        .theme-icon {
-            width: 50%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            z-index: 2;
-            transition: all 0.4s ease;
-        }
-
-        .theme-icon i {
-            font-size: 1.1rem;
-            transition: all 0.4s ease;
-        }
-
-        .theme-toggle-sidebar .fa-sun {
-            color: #FFD700;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        }
-
-        .theme-toggle-sidebar .fa-moon {
-            color: #E2E8F0;
-            text-shadow: 0 0 10px rgba(226, 232, 240, 0.5);
-        }
-
-        .theme-slider {
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 56px;
-            height: 34px;
-            background: var(--white);
-            border-radius: 50px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 1;
-            box-shadow: 0 2px 8px var(--shadow-md);
-        }
-
-        [data-theme="dark"] .theme-slider {
-            transform: translateX(60px);
-        }
-
-        .theme-icon.active {
-            transform: scale(1.1);
-        }
-
-        .theme-icon.inactive {
-            opacity: 0.7;
-            transform: scale(0.9);
-        }
-
-        [data-theme="dark"] .theme-icon:nth-child(1) {
-            transform: scale(0.9);
-            opacity: 0.7;
-        }
-
-        [data-theme="dark"] .theme-icon:nth-child(2) {
-            transform: scale(1.1);
-        }
-
-        [data-theme="light"] .theme-icon:nth-child(1) {
-            transform: scale(1.1);
-        }
-
-        [data-theme="light"] .theme-icon:nth-child(2) {
-            transform: scale(0.9);
-            opacity: 0.7;
-        }
-
-        /* ===== SIDEBAR ===== */
+        /* ===== IMPROVED SIDEBAR ===== */
         aside {
             width: 280px;
             background: var(--sidebar-bg);
@@ -211,7 +123,7 @@
             background-clip: text;
         }
 
-        /* ===== SIDEBAR LAYOUT IMPROVEMENT ===== */
+        /* ===== SIDEBAR CONTENT HORIZONTAL ===== */
         .sidebar-content {
             display: flex;
             flex-direction: column;
@@ -219,34 +131,41 @@
             flex: 1;
         }
 
+        .menu-horizontal {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
         .menu-row {
             display: flex;
-            justify-content: center; /* Perbaikan: dari space-between ke center */
             align-items: center;
-            gap: 12px; /* Tambah gap yang konsisten */
+            gap: 12px;
+            width: 100%;
         }
 
         .menu-item {
             flex: 1;
-            padding: 15px 12px; /* Kurangi padding horizontal */
+            padding: 14px 12px;
             border-radius: 16px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: center; /* Pastikan konten rata tengah */
-            gap: 8px; /* Kurangi gap antara ikon dan teks */
+            justify-content: flex-start;
+            gap: 12px;
             font-weight: 600;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             color: var(--text);
             border: 2px solid transparent;
             background: transparent;
-            text-align: center;
-            min-width: 0; /* Perbaikan untuk text-overflow */
+            text-align: left;
+            min-width: 0;
         }
 
         .menu-item:hover {
             background: rgba(255, 77, 148, 0.08);
-            transform: translateY(-2px);
+            transform: translateX(8px);
             color: var(--hot-pink);
         }
 
@@ -255,38 +174,132 @@
             color: white;
             box-shadow: 0 8px 24px rgba(255, 77, 148, 0.2);
             border-color: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
+            transform: translateX(8px);
         }
 
         .menu-item i {
-            width: 20px;
+            width: 24px;
             text-align: center;
-            font-size: 1.1rem;
-            flex-shrink: 0; /* Mencegah ikon menyusut */
+            font-size: 1.2rem;
+            flex-shrink: 0;
         }
 
         .menu-item span {
             flex: 1;
             white-space: nowrap;
             overflow: hidden;
-            text-overflow: ellipsis; /* Jika teks terlalu panjang */
+            text-overflow: ellipsis;
+        }
+
+        /* Theme Toggle Horizontal */
+        .theme-toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            padding: 12px;
+            border-radius: 16px;
+            background: rgba(255, 77, 148, 0.05);
+            border: 2px solid rgba(255, 77, 148, 0.1);
+            margin-top: auto;
+        }
+
+        .theme-toggle-label {
+            font-weight: 600;
+            color: var(--text);
+            flex-shrink: 0;
+        }
+
+        .theme-toggle-sidebar {
+            background: linear-gradient(135deg, var(--hot-pink), var(--purple));
+            color: white;
+            border-radius: 50px;
+            width: 70px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            border: 2px solid var(--white);
+            box-shadow: 0 4px 12px var(--shadow-md);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .theme-toggle-sidebar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--shadow-lg);
+        }
+
+        .theme-icon {
+            width: 50%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            transition: all 0.4s ease;
+        }
+
+        .theme-icon i {
+            font-size: 0.9rem;
+            transition: all 0.4s ease;
+        }
+
+        .theme-slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 28px;
+            height: 26px;
+            background: var(--white);
+            border-radius: 50px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1;
+            box-shadow: 0 2px 8px var(--shadow-md);
+        }
+
+        [data-theme="dark"] .theme-slider {
+            transform: translateX(38px);
+        }
+
+        [data-theme="dark"] .theme-icon:nth-child(1) {
+            transform: scale(0.9);
+            opacity: 0.7;
+        }
+
+        [data-theme="dark"] .theme-icon:nth-child(2) {
+            transform: scale(1.1);
+        }
+
+        [data-theme="light"] .theme-icon:nth-child(1) {
+            transform: scale(1.1);
+        }
+
+        [data-theme="light"] .theme-icon:nth-child(2) {
+            transform: scale(0.9);
+            opacity: 0.7;
         }
 
         /* Admin menu items */
         .admin-menu-item {
             width: 100%;
-            padding: 15px 20px;
+            padding: 14px 12px;
             border-radius: 16px;
-            margin-bottom: 8px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 15px;
+            justify-content: flex-start;
+            gap: 12px;
             font-weight: 600;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             color: var(--text);
             border: 2px solid transparent;
             background: transparent;
+            text-align: left;
         }
 
         .admin-menu-item:hover {
@@ -304,7 +317,7 @@
         }
 
         .admin-logout {
-            margin-top: auto;
+            margin-top: 10px;
             background: rgba(239, 68, 68, 0.1);
             color: var(--danger);
             border: 2px solid rgba(239, 68, 68, 0.2);
@@ -953,12 +966,20 @@
                 gap: 0;
             }
             
+            .theme-toggle-row {
+                flex-direction: column;
+                padding: 8px;
+                margin-top: 0;
+            }
+            
+            .theme-toggle-label {
+                font-size: 0.7rem;
+            }
+            
             .theme-toggle-sidebar {
                 width: 60px;
                 height: 60px;
-                margin: 0;
                 border-radius: 50%;
-                order: 2;
             }
             
             .theme-slider {
@@ -980,20 +1001,27 @@
                 transform: translate(-50%, -50%);
             }
             
+            .menu-horizontal {
+                flex-direction: row;
+                gap: 5px;
+                margin-bottom: 0;
+            }
+            
             .menu-row {
                 flex: 2;
                 gap: 5px;
             }
             
-            .menu-item {
+            .menu-item, .admin-menu-item {
                 padding: 10px 8px;
                 font-size: 0.7rem;
                 gap: 5px;
                 border-radius: 12px;
                 flex-direction: column;
+                text-align: center;
             }
             
-            .menu-item i {
+            .menu-item i, .admin-menu-item i {
                 font-size: 1rem;
             }
             
@@ -1002,12 +1030,7 @@
                 padding: 10px 5px;
                 font-size: 0.7rem;
                 gap: 5px;
-                margin-bottom: 5px;
                 text-align: center;
-            }
-            
-            .admin-menu-item i {
-                font-size: 1rem;
             }
             
             .admin-menu-item:hover,
@@ -1107,18 +1130,13 @@
                 height: 50px;
             }
             
-            .menu-item {
+            .menu-item, .admin-menu-item {
                 font-size: 0.65rem;
                 padding: 8px 4px;
             }
             
-            .menu-item i {
+            .menu-item i, .admin-menu-item i {
                 font-size: 0.9rem;
-            }
-            
-            .admin-menu-item {
-                font-size: 0.65rem;
-                padding: 8px 4px;
             }
             
             .fab {
@@ -1177,19 +1195,9 @@
         <div class="sidebar-content">
             <!-- Public Menu -->
             <div id="publicMenu">
-                <div class="theme-toggle-sidebar" onclick="toggleTheme()">
-                    <div class="theme-slider"></div>
-                    <div class="theme-icon">
-                        <i class="fas fa-sun"></i>
-                    </div>
-                    <div class="theme-icon">
-                        <i class="fas fa-moon"></i>
-                    </div>
-                </div>
-                
-                <div class="menu-row">
+                <div class="menu-horizontal">
                     <div class="menu-item active" onclick="showView('home', this)">
-                        <i class="fas fa-home"></i> 
+                        <i class="fas fa-th-large"></i> 
                         <span>Dashboard</span>
                     </div>
                     <div class="menu-item" onclick="openPin()">
@@ -1197,31 +1205,49 @@
                         <span>Admin Area</span>
                     </div>
                 </div>
+                
+                <div class="theme-toggle-row">
+                    <span class="theme-toggle-label">Tema:</span>
+                    <div class="theme-toggle-sidebar" onclick="toggleTheme()">
+                        <div class="theme-slider"></div>
+                        <div class="theme-icon">
+                            <i class="fas fa-sun"></i>
+                        </div>
+                        <div class="theme-icon">
+                            <i class="fas fa-moon"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Admin Menu -->
-            <div id="adminMenu" style="display: none; flex-direction: column; gap: 8px;">
-                <div class="theme-toggle-sidebar" onclick="toggleTheme()">
-                    <div class="theme-slider"></div>
-                    <div class="theme-icon">
-                        <i class="fas fa-sun"></i>
+            <div id="adminMenu" style="display: none;">
+                <div class="menu-horizontal">
+                    <div class="admin-menu-item active" onclick="showView('home', this)">
+                        <i class="fas fa-th-large"></i> 
+                        <span>Dashboard</span>
                     </div>
-                    <div class="theme-icon">
-                        <i class="fas fa-moon"></i>
+                    <div class="admin-menu-item" onclick="showView('manage', this)">
+                        <i class="fas fa-magic"></i> 
+                        <span>Kelola Materi</span>
+                    </div>
+                    <div class="admin-menu-item admin-logout" onclick="logoutAdmin()">
+                        <i class="fas fa-sign-out-alt"></i> 
+                        <span>Logout Admin</span>
                     </div>
                 </div>
                 
-                <div class="admin-menu-item" onclick="showView('home', this)">
-                    <i class="fas fa-th-large"></i> 
-                    <span>Dashboard</span>
-                </div>
-                <div class="admin-menu-item" onclick="showView('manage', this)">
-                    <i class="fas fa-magic"></i> 
-                    <span>Kelola Materi</span>
-                </div>
-                <div class="admin-menu-item admin-logout" onclick="logoutAdmin()">
-                    <i class="fas fa-sign-out-alt"></i> 
-                    <span>Logout Admin</span>
+                <div class="theme-toggle-row">
+                    <span class="theme-toggle-label">Tema:</span>
+                    <div class="theme-toggle-sidebar" onclick="toggleTheme()">
+                        <div class="theme-slider"></div>
+                        <div class="theme-icon">
+                            <i class="fas fa-sun"></i>
+                        </div>
+                        <div class="theme-icon">
+                            <i class="fas fa-moon"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1435,7 +1461,7 @@
             if(pin === "1506") {
                 isAdmin = true;
                 document.getElementById('publicMenu').style.display = 'none';
-                document.getElementById('adminMenu').style.display = 'flex';
+                document.getElementById('adminMenu').style.display = 'block';
                 updateFABVisibility('home');
                 closePin();
                 showView('manage', document.querySelectorAll('#adminMenu .admin-menu-item')[1]);
@@ -1548,6 +1574,91 @@
             }
         }
 
+        // ===== SUPABASE CRUD OPERATIONS =====
+        async function loadFromSupabase() {
+            try {
+                const { data, error } = await supabase
+                    .from('materi_k3')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                
+                // Transform data from Supabase to match our local format
+                db = data.map(item => ({
+                    id: item.id,
+                    title: item.title,
+                    content: item.content,
+                    image: item.image,
+                    createdAt: item.created_at,
+                    updatedAt: item.updated_at
+                }));
+                
+                // Sync with localStorage as backup
+                localStorage.setItem('k3_blossom_db', JSON.stringify(db));
+                
+                render();
+            } catch (error) {
+                console.error('Error loading from Supabase:', error);
+                showNotification('⚠️ Gagal memuat data dari server', 'error');
+                // Fallback to localStorage
+                db = JSON.parse(localStorage.getItem('k3_blossom_db')) || [];
+                render();
+            }
+        }
+
+        async function saveToSupabase(payload) {
+            try {
+                if (currentEditId) {
+                    // Update existing
+                    const { error } = await supabase
+                        .from('materi_k3')
+                        .update({
+                            title: payload.title,
+                            content: payload.content,
+                            image: payload.image,
+                            updated_at: payload.updatedAt
+                        })
+                        .eq('id', currentEditId);
+                    
+                    if (error) throw error;
+                } else {
+                    // Insert new
+                    const { error } = await supabase
+                        .from('materi_k3')
+                        .insert([{
+                            title: payload.title,
+                            content: payload.content,
+                            image: payload.image,
+                            created_at: payload.createdAt,
+                            updated_at: payload.updatedAt
+                        }]);
+                    
+                    if (error) throw error;
+                }
+                
+                return true;
+            } catch (error) {
+                console.error('Error saving to Supabase:', error);
+                return false;
+            }
+        }
+
+        async function deleteFromSupabase(id) {
+            try {
+                const { error } = await supabase
+                    .from('materi_k3')
+                    .delete()
+                    .eq('id', id);
+                
+                if (error) throw error;
+                return true;
+            } catch (error) {
+                console.error('Error deleting from Supabase:', error);
+                return false;
+            }
+        }
+
         // ===== CRUD OPERATIONS =====
         function prepareAdd() {
             currentEditId = null;
@@ -1567,7 +1678,7 @@
             document.getElementById('fTitle').focus();
         }
 
-        function saveData() {
+        async function saveData() {
             const title = document.getElementById('fTitle').value.trim();
             const content = document.getElementById('fEditor').innerHTML.trim();
             const file = document.getElementById('fFile').files[0];
@@ -1584,7 +1695,7 @@
                 return;
             }
 
-            const finalize = (img) => {
+            const finalize = async (img) => {
                 const now = new Date().toISOString();
                 const payload = {
                     id: currentEditId || Date.now(),
@@ -1596,20 +1707,43 @@
                     updatedAt: now
                 };
 
-                if(currentEditId) {
-                    const idx = db.findIndex(i => i.id === currentEditId);
-                    if(idx > -1) {
-                        db[idx] = {...db[idx], ...payload};
-                        showNotification('✅ Materi berhasil diperbarui!', 'success');
+                // Save to Supabase
+                const supabaseSuccess = await saveToSupabase(payload);
+                
+                if (supabaseSuccess) {
+                    if(currentEditId) {
+                        const idx = db.findIndex(i => i.id === currentEditId);
+                        if(idx > -1) {
+                            db[idx] = {...db[idx], ...payload};
+                            showNotification('✅ Materi berhasil diperbarui!', 'success');
+                        }
+                    } else {
+                        db.unshift(payload);
+                        showNotification('✅ Materi berhasil ditambahkan!', 'success');
                     }
+
+                    // Update local storage
+                    localStorage.setItem('k3_blossom_db', JSON.stringify(db));
+                    
+                    // Reload from Supabase to get the latest data
+                    await loadFromSupabase();
                 } else {
-                    db.unshift(payload);
-                    showNotification('✅ Materi berhasil ditambahkan!', 'success');
+                    // Fallback to local storage
+                    if(currentEditId) {
+                        const idx = db.findIndex(i => i.id === currentEditId);
+                        if(idx > -1) {
+                            db[idx] = {...db[idx], ...payload};
+                        }
+                    } else {
+                        db.unshift(payload);
+                    }
+                    
+                    localStorage.setItem('k3_blossom_db', JSON.stringify(db));
+                    render();
+                    showNotification('⚠️ Gagal menyimpan ke server, disimpan secara lokal', 'warning');
                 }
 
-                localStorage.setItem('k3_blossom_db', JSON.stringify(db));
                 currentEditId = null;
-                render();
                 showView('manage');
             };
 
@@ -1758,12 +1892,23 @@
             showView('editor');
         }
 
-        function deleteItem(id) {
+        async function deleteItem(id) {
             if(confirm('Hapus materi ini?\n\nTindakan ini tidak dapat dibatalkan.')) {
-                db = db.filter(i => i.id !== id);
-                localStorage.setItem('k3_blossom_db', JSON.stringify(db));
-                render();
-                showNotification('🗑️ Materi berhasil dihapus!', 'success');
+                // Delete from Supabase
+                const supabaseSuccess = await deleteFromSupabase(id);
+                
+                if (supabaseSuccess) {
+                    db = db.filter(i => i.id !== id);
+                    localStorage.setItem('k3_blossom_db', JSON.stringify(db));
+                    render();
+                    showNotification('🗑️ Materi berhasil dihapus!', 'success');
+                } else {
+                    // Fallback to local storage
+                    db = db.filter(i => i.id !== id);
+                    localStorage.setItem('k3_blossom_db', JSON.stringify(db));
+                    render();
+                    showNotification('⚠️ Gagal menghapus dari server, dihapus secara lokal', 'warning');
+                }
             }
         }
 
@@ -1837,9 +1982,11 @@
         document.head.appendChild(style);
 
         // ===== INITIALIZATION =====
-        function init() {
+        async function init() {
             loadTheme();
-            render();
+            
+            // Load data from Supabase
+            await loadFromSupabase();
             
             // Keyboard shortcuts
             document.addEventListener('keydown', (e) => {
@@ -1883,7 +2030,7 @@
             });
             
             if(db.length === 0) {
-                db = []; // Menghapus semua objek di dalam kurung siku
+                db = [];
                 localStorage.setItem('k3_blossom_db', JSON.stringify(db));
                 render();
             }
