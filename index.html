@@ -10,9 +10,9 @@
     <!-- Supabase JS Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // Inisialisasi Supabase
-        const supabaseUrl = 'https://dwelrsjjilxmsopxfaem.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR3ZWxyc2pqaWx4bXNvcHhmYWVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY2ODgyNjYsImV4cCI6MjA4MjI2NDI2Nn0.kIYoIRXf5KEZq7RvDtDqTrxgZVg9RgBSbxivhfEdXFE';
+        // Inisialisasi Supabase - FIXED URL
+        const supabaseUrl = 'https://amhggvcjkxlkulmyyedo.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFtaGdndmNqa3hsa3VsbXl5ZWRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY3MDg3NzMsImV4cCI6MjA4MjI4NDc3M30.vljczJckNMeISqTo9oHhF_3z0pulaZSk2aW9hHd763w';
         const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
     </script>
 
@@ -58,6 +58,22 @@
             --success: #4ade80;
             --danger: #f87171;
             --warning: #fbbf24;
+        }
+
+        /* ===== LOADING SPINNER ===== */
+        .spinner {
+            border: 4px solid var(--gray-200);
+            border-top: 4px solid var(--hot-pink);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         /* ===== RESET & BASE ===== */
@@ -1295,7 +1311,12 @@
                     <span>UPLOAD MATERI</span>
                 </button>
             </div>
-            <div class="grid" id="homeGrid"></div>
+            <div class="grid" id="homeGrid">
+                <div class="loading-spinner" style="grid-column: 1/-1; text-align: center; padding: 40px;">
+                    <div class="spinner"></div>
+                    <p style="margin-top: 16px; color: var(--purple);">Memuat data dari server...</p>
+                </div>
+            </div>
         </section>
 
         <!-- MANAGE VIEW -->
@@ -1397,13 +1418,13 @@
         let db = JSON.parse(localStorage.getItem('k3_blossom_db')) || [];
         let isAdmin = false;
         let currentEditId = null;
+        let isOnline = navigator.onLine;
 
         // ===== THEME MANAGEMENT =====
         function toggleTheme() {
             const currentTheme = document.documentElement.getAttribute('data-theme');
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             
-            // Smooth transition animation
             document.documentElement.style.transition = 'all 0.5s ease';
             document.documentElement.setAttribute('data-theme', newTheme);
             localStorage.setItem('k3_theme', newTheme);
@@ -1411,13 +1432,6 @@
             setTimeout(() => {
                 document.documentElement.style.transition = '';
             }, 500);
-            
-            // Add click animation
-            const toggleItem = event.currentTarget;
-            toggleItem.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                toggleItem.style.transform = 'scale(1)';
-            }, 150);
         }
 
         function loadTheme() {
@@ -1427,26 +1441,17 @@
 
         // ===== NAVIGATION =====
         function showView(viewId, el) {
-            // Hide all views
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-            
-            // Show selected view
             document.getElementById('view-' + viewId).classList.add('active');
             
-            // Update menu active state
             if(el) {
                 document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
                 document.querySelectorAll('.admin-menu-item').forEach(m => m.classList.remove('active'));
                 el.classList.add('active');
             }
             
-            // Manage FAB visibility
             updateFABVisibility(viewId);
-            
-            // Update home upload button
             updateHomeUploadButton();
-            
-            // Scroll to top
             document.querySelector('main').scrollTop = 0;
         }
 
@@ -1495,12 +1500,9 @@
                 closePin();
                 showView('manage', document.querySelectorAll('#adminMenu .admin-menu-item')[1]);
                 render();
-                
-                // Show success notification
                 showNotification('🎉 Selamat datang Admin!', 'success');
             } else {
                 showNotification('❌ PIN salah! Coba lagi.', 'error');
-                // Add shake animation to input
                 const pinInput = document.getElementById('pinInput');
                 pinInput.style.animation = 'shake 0.5s ease';
                 setTimeout(() => {
@@ -1537,22 +1539,8 @@
         
         function insertBulletPoint() {
             document.getElementById('fEditor').focus();
-            const selection = window.getSelection();
-            if(selection.rangeCount > 0) {
-                const range = selection.getRangeAt(0);
-                const li = document.createElement('li');
-                li.innerHTML = '<span style="color: var(--hot-pink); margin-right: 8px;">•</span> Poin baru';
-                const ul = document.createElement('ul');
-                ul.appendChild(li);
-                range.insertNode(ul);
-                range.setStartAfter(li);
-                range.setEndAfter(li);
-                selection.removeAllRanges();
-                selection.addRange(range);
-            } else {
-                document.execCommand('insertHTML', false, 
-                    '<ul><li><span style="color: var(--hot-pink); margin-right: 8px;">•</span> Poin baru</li></ul>');
-            }
+            document.execCommand('insertHTML', false, 
+                '<ul><li><span style="color: var(--hot-pink); margin-right: 8px;">•</span> Poin baru</li></ul>');
         }
         
         function insertImage() {
@@ -1585,7 +1573,6 @@
                         document.getElementById('filePreview').style.display = 'block';
                         document.getElementById('fileName').innerText = `📁 ${fileName} (${fileSize}MB)`;
                         
-                        // Update upload area
                         document.getElementById('uploadArea').innerHTML = 
                             `<i class="fas fa-check-circle" style="font-size: 3.5rem; color: var(--success); margin-bottom: 20px;"></i>
                              <h3 style="color: var(--success); margin-bottom: 12px; font-size: 1.5rem;">
@@ -1606,6 +1593,8 @@
         // ===== SUPABASE CRUD OPERATIONS =====
         async function loadFromSupabase() {
             try {
+                showLoading(true);
+                
                 const { data, error } = await supabase
                     .from('materi_k3')
                     .select('*')
@@ -1613,33 +1602,37 @@
                 
                 if (error) throw error;
                 
-                // Transform data from Supabase to match our local format
                 db = data.map(item => ({
                     id: item.id,
                     title: item.title,
                     content: item.content,
-                    image: item.image,
+                    image: item.image || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2000',
                     createdAt: item.created_at,
                     updatedAt: item.updated_at
                 }));
                 
-                // Sync with localStorage as backup
                 localStorage.setItem('k3_blossom_db', JSON.stringify(db));
-                
                 render();
+                showLoading(false);
+                
             } catch (error) {
                 console.error('Error loading from Supabase:', error);
                 showNotification('⚠️ Gagal memuat data dari server', 'error');
+                
                 // Fallback to localStorage
                 db = JSON.parse(localStorage.getItem('k3_blossom_db')) || [];
                 render();
+                showLoading(false);
             }
         }
 
         async function saveToSupabase(payload) {
             try {
+                if (!isOnline) {
+                    throw new Error('Tidak ada koneksi internet');
+                }
+
                 if (currentEditId) {
-                    // Update existing
                     const { error } = await supabase
                         .from('materi_k3')
                         .update({
@@ -1652,7 +1645,6 @@
                     
                     if (error) throw error;
                 } else {
-                    // Insert new
                     const { error } = await supabase
                         .from('materi_k3')
                         .insert([{
@@ -1675,6 +1667,10 @@
 
         async function deleteFromSupabase(id) {
             try {
+                if (!isOnline) {
+                    throw new Error('Tidak ada koneksi internet');
+                }
+
                 const { error } = await supabase
                     .from('materi_k3')
                     .delete()
@@ -1697,7 +1693,6 @@
             document.getElementById('filePreview').style.display = 'none';
             document.getElementById('fFile').value = '';
             
-            // Reset upload area
             document.getElementById('uploadArea').innerHTML = 
                 `<i class="fas fa-cloud-upload-alt"></i>
                  <h3>Upload Gambar Utama</h3>
@@ -1736,7 +1731,6 @@
                     updatedAt: now
                 };
 
-                // Save to Supabase
                 const supabaseSuccess = await saveToSupabase(payload);
                 
                 if (supabaseSuccess) {
@@ -1751,13 +1745,13 @@
                         showNotification('✅ Materi berhasil ditambahkan!', 'success');
                     }
 
-                    // Update local storage
                     localStorage.setItem('k3_blossom_db', JSON.stringify(db));
-                    
-                    // Reload from Supabase to get the latest data
                     await loadFromSupabase();
                 } else {
-                    // Fallback to local storage
+                    if (!isOnline) {
+                        showNotification('📶 Mode offline: Data disimpan lokal', 'warning');
+                    }
+                    
                     if(currentEditId) {
                         const idx = db.findIndex(i => i.id === currentEditId);
                         if(idx > -1) {
@@ -1788,7 +1782,10 @@
         function render() {
             const hG = document.getElementById('homeGrid');
             const aG = document.getElementById('adminGrid');
-            hG.innerHTML = aG.innerHTML = '';
+            
+            // Clear loading state
+            hG.innerHTML = '';
+            aG.innerHTML = '';
 
             if(db.length === 0) {
                 const emptyHtml = `
@@ -1825,7 +1822,8 @@
                 
                 const cardHtml = `
                     <div class="card" onclick="openDetail(${item.id})">
-                        <img src="${item.image}" alt="${item.title}" loading="lazy">
+                        <img src="${item.image}" alt="${item.title}" loading="lazy" 
+                             onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2000'">
                         <div class="card-info">
                             <h3>${item.title}</h3>
                             <div class="card-date">
@@ -1852,6 +1850,18 @@
             });
         }
 
+        function showLoading(show) {
+            const homeGrid = document.getElementById('homeGrid');
+            if (show) {
+                homeGrid.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
+                        <div class="spinner"></div>
+                        <p style="margin-top: 16px; color: var(--purple);">Memuat data dari server...</p>
+                    </div>
+                `;
+            }
+        }
+
         function openDetail(id) {
             const item = db.find(i => i.id === id);
             if(!item) return;
@@ -1865,7 +1875,8 @@
             });
             
             document.getElementById('detailContent').innerHTML = `
-                <img src="${item.image}" class="detail-img" onclick="zoom('${item.image}')" alt="${item.title}">
+                <img src="${item.image}" class="detail-img" onclick="zoom('${item.image}')" alt="${item.title}"
+                     onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2000'">
                 <h1 style="color: var(--hot-pink); font-size: 2.5rem; margin-bottom: 24px; line-height: 1.2;">
                     ${item.title}
                 </h1>
@@ -1922,22 +1933,24 @@
         }
 
         async function deleteItem(id) {
-            if(confirm('Hapus materi ini?\n\nTindakan ini tidak dapat dibatalkan.')) {
-                // Delete from Supabase
-                const supabaseSuccess = await deleteFromSupabase(id);
-                
-                if (supabaseSuccess) {
-                    db = db.filter(i => i.id !== id);
-                    localStorage.setItem('k3_blossom_db', JSON.stringify(db));
-                    render();
-                    showNotification('🗑️ Materi berhasil dihapus!', 'success');
-                } else {
-                    // Fallback to local storage
-                    db = db.filter(i => i.id !== id);
-                    localStorage.setItem('k3_blossom_db', JSON.stringify(db));
-                    render();
-                    showNotification('⚠️ Gagal menghapus dari server, dihapus secara lokal', 'warning');
+            if(!confirm('Hapus materi ini?\n\nTindakan ini tidak dapat dibatalkan.')) return;
+            
+            const supabaseSuccess = await deleteFromSupabase(id);
+            
+            if (supabaseSuccess) {
+                db = db.filter(i => i.id !== id);
+                localStorage.setItem('k3_blossom_db', JSON.stringify(db));
+                render();
+                showNotification('🗑️ Materi berhasil dihapus!', 'success');
+            } else {
+                if (!isOnline) {
+                    showNotification('📶 Mode offline: Hapus data lokal', 'warning');
                 }
+                
+                db = db.filter(i => i.id !== id);
+                localStorage.setItem('k3_blossom_db', JSON.stringify(db));
+                render();
+                showNotification('⚠️ Gagal menghapus dari server, dihapus secara lokal', 'warning');
             }
         }
 
@@ -1948,7 +1961,6 @@
 
         // ===== NOTIFICATION =====
         function showNotification(message, type = 'info') {
-            // Remove existing notification
             const existing = document.querySelector('.notification');
             if(existing) existing.remove();
             
@@ -1991,35 +2003,28 @@
             }, 3000);
         }
 
-        // Add animations
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes slideIn {
-                from { transform: translateX(100%); opacity: 0; }
-                to { transform: translateX(0); opacity: 1; }
+        // ===== CONNECTION MONITORING =====
+        function updateConnectionStatus() {
+            isOnline = navigator.onLine;
+            if (!isOnline) {
+                showNotification('📶 Anda sedang offline', 'warning');
             }
-            @keyframes slideOut {
-                from { transform: translateX(0); opacity: 1; }
-                to { transform: translateX(100%); opacity: 0; }
-            }
-            @keyframes shake {
-                0%, 100% { transform: translateX(0); }
-                10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-                20%, 40%, 60%, 80% { transform: translateX(5px); }
-            }
-        `;
-        document.head.appendChild(style);
+        }
 
         // ===== INITIALIZATION =====
         async function init() {
             loadTheme();
             
-            // Load data from Supabase
+            // Monitor connection
+            updateConnectionStatus();
+            window.addEventListener('online', updateConnectionStatus);
+            window.addEventListener('offline', updateConnectionStatus);
+            
+            // Load data
             await loadFromSupabase();
             
             // Keyboard shortcuts
             document.addEventListener('keydown', (e) => {
-                // Ctrl+S to save
                 if((e.ctrlKey || e.metaKey) && e.key === 's') {
                     e.preventDefault();
                     if(document.getElementById('view-editor').classList.contains('active')) {
@@ -2027,32 +2032,27 @@
                     }
                 }
                 
-                // Ctrl+B for bold
                 if((e.ctrlKey || e.metaKey) && e.key === 'b') {
                     e.preventDefault();
                     exec('bold');
                 }
                 
-                // Ctrl+I for italic
                 if((e.ctrlKey || e.metaKey) && e.key === 'i') {
                     e.preventDefault();
                     exec('italic');
                 }
                 
-                // Ctrl+U for underline
                 if((e.ctrlKey || e.metaKey) && e.key === 'u') {
                     e.preventDefault();
                     exec('underline');
                 }
                 
-                // Escape to close modals
                 if(e.key === 'Escape') {
                     closeDetail();
                     document.getElementById('lightbox').style.display = 'none';
                     closePin();
                 }
                 
-                // Enter to submit pin
                 if(e.key === 'Enter' && document.getElementById('pinModal').style.display === 'flex') {
                     verifyPin();
                 }
