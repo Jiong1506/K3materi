@@ -7,7 +7,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;500;700&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
     
-    <!-- Supabase JS Client - HANYA LOAD LIBRARY -->
+    <!-- Supabase JS Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
@@ -1411,7 +1411,7 @@
         // ===== DEBUG LOG =====
         console.log('🚀 Starting K3 Materi App...');
         
-        // ===== SUPABASE INITIALIZATION (HANYA SEKALI) =====
+        // ===== SUPABASE INITIALIZATION =====
         let supabaseClient = null;
         
         function initSupabase() {
@@ -1441,9 +1441,57 @@
         }
         
         // ===== GLOBAL VARIABLES =====
-        let db = JSON.parse(localStorage.getItem('k3_blossom_db')) || [];
+        let db = [];
         let isAdmin = false;
         let currentEditId = null;
+        
+        // ===== LOCALSTORAGE HELPER (Dengan Error Handling) =====
+        function saveToLocalStorage(key, data) {
+            try {
+                // Bersihkan data lama sebelum menyimpan yang baru
+                localStorage.removeItem(key);
+                
+                // Coba simpan data baru
+                localStorage.setItem(key, JSON.stringify(data));
+                console.log(`✅ Data saved to localStorage (${key})`);
+                return true;
+            } catch (error) {
+                console.error('❌ localStorage error:', error);
+                
+                // Jika localStorage penuh, coba bersihkan dan coba lagi
+                if (error.name === 'QuotaExceededError' || error.message.includes('quota')) {
+                    console.log('⚠️ localStorage penuh, mencoba membersihkan...');
+                    
+                    try {
+                        // Bersihkan semua data aplikasi K3
+                        localStorage.removeItem('k3_blossom_db');
+                        localStorage.removeItem('k3_theme');
+                        
+                        // Coba simpan lagi
+                        localStorage.setItem(key, JSON.stringify(data));
+                        console.log(`✅ Data saved after cleanup (${key})`);
+                        return true;
+                    } catch (cleanupError) {
+                        console.error('❌ Masih gagal setelah cleanup:', cleanupError);
+                        showNotification('⚠️ Penyimpanan lokal penuh. Beberapa fitur mungkin terbatas.', 'warning');
+                        return false;
+                    }
+                }
+                
+                showNotification('⚠️ Gagal menyimpan data lokal. ' + error.message, 'warning');
+                return false;
+            }
+        }
+        
+        function loadFromLocalStorage(key) {
+            try {
+                const data = localStorage.getItem(key);
+                return data ? JSON.parse(data) : null;
+            } catch (error) {
+                console.error('❌ Error loading from localStorage:', error);
+                return null;
+            }
+        }
         
         // ===== RANDOM IMAGE GENERATOR =====
         function getRandomK3Image() {
@@ -1475,7 +1523,13 @@
             
             document.documentElement.style.transition = 'all 0.5s ease';
             document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('k3_theme', newTheme);
+            
+            // Simpan tema dengan error handling
+            try {
+                localStorage.setItem('k3_theme', newTheme);
+            } catch (error) {
+                console.error('❌ Gagal menyimpan tema:', error);
+            }
             
             setTimeout(() => {
                 document.documentElement.style.transition = '';
@@ -1483,8 +1537,13 @@
         }
         
         function loadTheme() {
-            const savedTheme = localStorage.getItem('k3_theme') || 'light';
-            document.documentElement.setAttribute('data-theme', savedTheme);
+            try {
+                const savedTheme = localStorage.getItem('k3_theme') || 'light';
+                document.documentElement.setAttribute('data-theme', savedTheme);
+            } catch (error) {
+                console.error('❌ Gagal memuat tema:', error);
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
         }
         
         // ===== NAVIGATION =====
@@ -1672,8 +1731,8 @@
                 if (error) {
                     console.error('❌ Supabase error:', error);
                     
-                    // Fallback to localStorage
-                    const localData = JSON.parse(localStorage.getItem('k3_blossom_db')) || [];
+                    // Fallback to localStorage jika ada
+                    const localData = loadFromLocalStorage('k3_blossom_db') || [];
                     console.log('🔄 Fallback to localStorage:', localData.length, 'items');
                     
                     if (localData.length > 0) {
@@ -1702,8 +1761,8 @@
                     
                     console.log('✅ Transformed data:', db);
                     
-                    // Save to localStorage
-                    localStorage.setItem('k3_blossom_db', JSON.stringify(db));
+                    // Save to localStorage (dengan error handling)
+                    saveToLocalStorage('k3_blossom_db', db);
                     console.log('✅ Data loaded successfully:', db.length, 'items');
                     
                     render();
@@ -1905,8 +1964,8 @@
                         showNotification('✅ Materi berhasil ditambahkan!', 'success');
                     }
         
-                    // Update local storage
-                    localStorage.setItem('k3_blossom_db', JSON.stringify(db));
+                    // Update local storage (dengan error handling)
+                    saveToLocalStorage('k3_blossom_db', db);
                     
                     // Reload data
                     await loadFromSupabase();
@@ -1921,9 +1980,17 @@
                         db.unshift(payload);
                     }
                     
-                    localStorage.setItem('k3_blossom_db', JSON.stringify(db));
-                    render();
-                    showNotification('⚠️ ' + (supabaseResult.error || 'Gagal menyimpan ke server, disimpan secara lokal'), 'warning');
+                    // Coba simpan ke localStorage
+                    const saved = saveToLocalStorage('k3_blossom_db', db);
+                    
+                    if (saved) {
+                        render();
+                        showNotification('⚠️ ' + (supabaseResult.error || 'Gagal menyimpan ke server, disimpan secara lokal'), 'warning');
+                    } else {
+                        // Jika tidak bisa simpan ke localStorage, tetap render dari memory
+                        render();
+                        showNotification('⚠️ Gagal menyimpan ke server dan penyimpanan lokal', 'error');
+                    }
                 }
         
                 currentEditId = null;
@@ -2074,15 +2141,21 @@
             
             if (supabaseResult.success) {
                 db = db.filter(i => i.id !== id);
-                localStorage.setItem('k3_blossom_db', JSON.stringify(db));
+                saveToLocalStorage('k3_blossom_db', db);
                 render();
                 showNotification('🗑️ Materi berhasil dihapus!', 'success');
             } else {
                 // Fallback to local storage
                 db = db.filter(i => i.id !== id);
-                localStorage.setItem('k3_blossom_db', JSON.stringify(db));
-                render();
-                showNotification('⚠️ ' + (supabaseResult.error || 'Gagal menghapus dari server, dihapus secara lokal'), 'warning');
+                const saved = saveToLocalStorage('k3_blossom_db', db);
+                
+                if (saved) {
+                    render();
+                    showNotification('⚠️ ' + (supabaseResult.error || 'Gagal menghapus dari server, dihapus secara lokal'), 'warning');
+                } else {
+                    render();
+                    showNotification('⚠️ Gagal menghapus dari server dan penyimpanan lokal', 'error');
+                }
             }
         }
         
@@ -2137,36 +2210,23 @@
         }
         
         // ===== DEBUG FUNCTIONS =====
-        function fixAllImages() {
-            console.log('🔄 Fixing all images...');
-            
-            const images = [
-                'https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2070',
-                'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070',
-                'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070',
-                'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2000',
-                'https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070',
-                'https://images.unsplash.com/photo-1577412647305-991150c7d163?q=80&w=2070'
-            ];
-            
-            // Update local data
-            db = db.map((item, index) => ({
-                ...item,
-                image: images[index % images.length]
-            }));
-            
-            // Save to localStorage
-            localStorage.setItem('k3_blossom_db', JSON.stringify(db));
-            
-            // Render ulang
-            render();
-            
-            console.log('✅ Images fixed!');
-            showNotification('🔄 Gambar diperbarui dengan variasi berbeda!', 'success');
+        function clearLocalStorage() {
+            if(confirm('Bersihkan semua data lokal?\nIni akan menghapus cache aplikasi.')) {
+                try {
+                    localStorage.removeItem('k3_blossom_db');
+                    localStorage.removeItem('k3_theme');
+                    showNotification('🧹 Data lokal dibersihkan!', 'success');
+                    
+                    // Reload data dari Supabase
+                    loadFromSupabase();
+                } catch (error) {
+                    showNotification('❌ Gagal membersihkan data lokal', 'error');
+                }
+            }
         }
         
         // Untuk debug: tambahkan tombol di Console
-        window.fixImages = fixAllImages;
+        window.clearStorage = clearLocalStorage;
         window.getRandomImage = getRandomK3Image;
         
         // ===== INITIALIZATION =====
