@@ -751,6 +751,35 @@
             transform: translateY(-2px);
         }
 
+        /* ===== DELETE PHOTO BUTTON ===== */
+        .delete-photo-btn {
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 16px;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .delete-photo-btn:hover {
+            background: linear-gradient(135deg, #dc2626, var(--danger));
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        .delete-photo-btn:active {
+            transform: translateY(0);
+        }
+
         /* ===== FLOATING ACTION BUTTON ===== */
         .fab {
             position: fixed; 
@@ -1146,6 +1175,11 @@
             #detailOverlay {
                 padding: 24px;
             }
+            
+            .delete-photo-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1184,6 +1218,11 @@
                 width: 56px;
                 height: 56px;
                 font-size: 1.5rem;
+            }
+            
+            .delete-photo-btn {
+                padding: 8px 16px;
+                font-size: 0.8rem;
             }
         }
 
@@ -1373,6 +1412,9 @@
                 <div id="filePreview" style="display: none; margin: 32px 0; text-align: center;">
                     <img id="previewImg" src="" style="max-width: 300px; border-radius: 16px; border: 3px solid var(--purple); box-shadow: 0 8px 24px var(--shadow-md);">
                     <p id="fileName" style="margin-top: 16px; color: var(--hot-pink); font-weight: 600;"></p>
+                    <button class="delete-photo-btn" onclick="removePhoto()">
+                        <i class="fas fa-trash"></i> Hapus Foto
+                    </button>
                 </div>
 
                 <div style="display: flex; flex-direction: column; gap: 20px; margin-top: 40px;">
@@ -1445,16 +1487,13 @@
         
         // ===== LOCALSTORAGE OPTIMIZATION =====
         function cleanDataForStorage(data) {
-            // Remove base64 images to save space
             return data.map(item => {
                 const cleanedItem = { ...item };
                 
-                // If image is base64, replace with empty string or placeholder
                 if (cleanedItem.image && cleanedItem.image.startsWith('data:image')) {
                     cleanedItem.image = '';
                 }
                 
-                // Truncate content if too long (keep only first 5000 chars)
                 if (cleanedItem.content && cleanedItem.content.length > 5000) {
                     cleanedItem.content = cleanedItem.content.substring(0, 5000) + '...';
                 }
@@ -1465,10 +1504,7 @@
         
         function saveToLocalStorage(key, data) {
             try {
-                // Clean data before saving
                 const cleanedData = cleanDataForStorage(data);
-                
-                // Convert to JSON and check size
                 const jsonData = JSON.stringify(cleanedData);
                 const sizeInMB = (new Blob([jsonData]).size / 1024 / 1024).toFixed(2);
                 
@@ -1476,7 +1512,6 @@
                 
                 if (sizeInMB > 4) {
                     console.warn('⚠️ Data size exceeds 4MB, limiting to 20 items');
-                    // Keep only latest 20 items
                     const limitedData = cleanedData.slice(0, 20);
                     localStorage.setItem(key, JSON.stringify(limitedData));
                 } else {
@@ -1708,6 +1743,25 @@
                     showNotification('⚠️ Format file tidak didukung!', 'error');
                     input.value = '';
                 }
+            }
+        }
+        
+        // ===== NEW FUNCTION: REMOVE PHOTO =====
+        function removePhoto() {
+            if(confirm('Hapus foto yang sudah dipilih?')) {
+                // Reset file input
+                document.getElementById('fFile').value = '';
+                
+                // Hide preview
+                document.getElementById('filePreview').style.display = 'none';
+                
+                // Reset upload area to default
+                document.getElementById('uploadArea').innerHTML = 
+                    `<i class="fas fa-cloud-upload-alt"></i>
+                     <h3>Upload Gambar Utama</h3>
+                     <p>Seret atau klik untuk mengunggah file gambar (JPG, PNG, GIF, Max 10MB)</p>`;
+                
+                showNotification('🗑️ Foto berhasil dihapus!', 'success');
             }
         }
         
