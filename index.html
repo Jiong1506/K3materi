@@ -602,7 +602,7 @@
             border-radius: 20px; 
             padding: 32px; 
             outline: none; 
-            font-size: 1.125rem;
+            font-size: 1.25rem; /* Diubah dari 1.125rem ke 1.25rem */
             background: var(--gray-100);
             color: var(--text);
             line-height: 1.8;
@@ -982,6 +982,66 @@
             border-color: var(--hot-pink);
         }
 
+        /* ===== DETAIL TITLE ===== */
+        .detail-title {
+            color: var(--hot-pink);
+            font-size: 2.5rem;
+            margin-bottom: 24px;
+            line-height: 1.2;
+        }
+
+        /* ===== MATERI CONTENT STYLE ===== */
+        .materi-content {
+            font-size: 1.25rem;
+            line-height: 1.8;
+            color: var(--text);
+            padding: 32px;
+            background: var(--gray-100);
+            border-radius: 24px;
+        }
+
+        .materi-content h1,
+        .materi-content h2,
+        .materi-content h3,
+        .materi-content h4,
+        .materi-content h5,
+        .materi-content h6 {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 700;
+            color: var(--hot-pink);
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+
+        .materi-content h1 { font-size: 2rem; }
+        .materi-content h2 { font-size: 1.75rem; }
+        .materi-content h3 { font-size: 1.5rem; }
+        .materi-content h4 { font-size: 1.25rem; }
+        .materi-content h5 { font-size: 1.125rem; }
+        .materi-content h6 { font-size: 1rem; }
+
+        .materi-content p {
+            margin-bottom: 1.2em;
+        }
+
+        .materi-content ul,
+        .materi-content ol {
+            margin-bottom: 1.2em;
+            padding-left: 2em;
+        }
+
+        .materi-content li {
+            margin-bottom: 0.5em;
+        }
+
+        .materi-content strong {
+            color: var(--hot-pink);
+        }
+
+        .materi-content em {
+            color: var(--purple);
+        }
+
         /* ===== RESPONSIVE ===== */
         @media (max-width: 1024px) {
             .grid {
@@ -1146,7 +1206,7 @@
             .rich-editor {
                 padding: 20px;
                 min-height: 300px;
-                font-size: 1rem;
+                font-size: 1.25rem; /* Tetap 1.25rem untuk mobile */
             }
             
             .file-upload-area {
@@ -1836,7 +1896,7 @@
                 const dataToSave = {
                     title: payload.title,
                     content: payload.content,
-                    image: payload.image || getRandomK3Image(),
+                    image: payload.image,
                     created_at: payload.createdAt || new Date().toISOString(),
                     updated_at: payload.updatedAt || new Date().toISOString()
                 };
@@ -1984,23 +2044,19 @@
         
             const finalize = async (img) => {
                 const now = new Date().toISOString();
-                
-                // Cari item lama jika sedang edit
                 const oldItem = currentEditId ? db.find(i => i.id === currentEditId) : null;
                 
-                // Tentukan gambar yang akan digunakan:
-                // 1. Jika ada gambar baru (img tidak null), gunakan gambar baru
-                // 2. Jika sedang edit dan tidak ada gambar baru, pertahankan gambar lama
-                // 3. Jika tidak keduanya (materi baru tanpa gambar), gunakan gambar random
+                // PERBAIKAN: Jika tidak ada gambar baru dan sedang edit, pertahankan gambar lama
+                // Jika tidak ada gambar lama dan tidak ada gambar baru, gunakan gambar random
                 let imageToUse;
                 if (img) {
                     imageToUse = img; // Gambar baru diupload
                 } else if (oldItem && oldItem.image) {
                     imageToUse = oldItem.image; // Pertahankan gambar lama saat edit
                 } else {
-                    imageToUse = getRandomK3Image(); // Gambar random untuk materi baru tanpa gambar
+                    imageToUse = getRandomK3Image(); // Gambar random hanya untuk materi baru tanpa gambar
                 }
-        
+
                 const payload = {
                     id: currentEditId || Date.now(),
                     title, 
@@ -2057,7 +2113,7 @@
                 reader.onload = (e) => finalize(e.target.result);
                 reader.readAsDataURL(file);
             } else {
-                finalize(); // Tidak ada file baru, img akan menjadi undefined
+                finalize();
             }
         }
         
@@ -2133,10 +2189,8 @@
                      onclick="zoom('${item.image || getRandomK3Image()}')" 
                      alt="${item.title}"
                      onerror="this.src='${getRandomK3Image()}'">
-                <h1 style="color: var(--hot-pink); font-size: 2.5rem; margin-bottom: 24px; line-height: 1.2;">
-                    ${item.title}
-                </h1>
-                <div style="font-size: 1.25rem; line-height: 1.8; color: var(--text); padding: 32px; background: var(--gray-100); border-radius: 24px;">
+                <h1 class="detail-title">${item.title}</h1>
+                <div class="materi-content">
                     ${item.content}
                 </div>
                 <div style="margin-top: 40px; padding-top: 32px; border-top: 2px solid rgba(255, 77, 148, 0.1);">
