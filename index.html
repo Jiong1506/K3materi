@@ -1984,12 +1984,29 @@
         
             const finalize = async (img) => {
                 const now = new Date().toISOString();
+                
+                // Cari item lama jika sedang edit
+                const oldItem = currentEditId ? db.find(i => i.id === currentEditId) : null;
+                
+                // Tentukan gambar yang akan digunakan:
+                // 1. Jika ada gambar baru (img tidak null), gunakan gambar baru
+                // 2. Jika sedang edit dan tidak ada gambar baru, pertahankan gambar lama
+                // 3. Jika tidak keduanya (materi baru tanpa gambar), gunakan gambar random
+                let imageToUse;
+                if (img) {
+                    imageToUse = img; // Gambar baru diupload
+                } else if (oldItem && oldItem.image) {
+                    imageToUse = oldItem.image; // Pertahankan gambar lama saat edit
+                } else {
+                    imageToUse = getRandomK3Image(); // Gambar random untuk materi baru tanpa gambar
+                }
+        
                 const payload = {
                     id: currentEditId || Date.now(),
                     title, 
                     content,
-                    image: img || getRandomK3Image(),
-                    createdAt: currentEditId ? db.find(i => i.id === currentEditId)?.createdAt : now,
+                    image: imageToUse,
+                    createdAt: oldItem ? oldItem.createdAt : now,
                     updatedAt: now
                 };
         
@@ -2040,7 +2057,7 @@
                 reader.onload = (e) => finalize(e.target.result);
                 reader.readAsDataURL(file);
             } else {
-                finalize();
+                finalize(); // Tidak ada file baru, img akan menjadi undefined
             }
         }
         
