@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>.🔎 Cloud Materi K3 🔎</title>
+    <title>🔎 Cloud Materi K3 🔎</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;500;700&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
     
@@ -31,7 +31,7 @@
             --success: #22c55e;
             --danger: #ef4444;
             --warning: #f59e0b;
-            --blue: #2563eb; /* Tambahkan warna biru untuk bold text */
+            --blue: #2563eb;
         }
 
         :root[data-theme="dark"] {
@@ -53,7 +53,7 @@
             --success: #4ade80;
             --danger: #f87171;
             --warning: #fbbf24;
-            --blue: #3b82f6; /* Tambahkan warna biru untuk dark theme */
+            --blue: #3b82f6;
         }
 
         /* ===== LOADING SPINNER ===== */
@@ -410,6 +410,83 @@
             font-size: 1.25rem;
         }
 
+        /* ===== SEARCH & FILTER BAR ===== */
+        .search-filter-bar {
+            display: flex;
+            gap: 16px;
+            margin: 24px 0 32px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--hot-pink);
+            font-size: 1.2rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 20px 16px 52px;
+            border-radius: 60px;
+            border: 2px solid rgba(255, 77, 148, 0.2);
+            background: var(--white);
+            color: var(--text);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline: none;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .search-input:focus {
+            border-color: var(--hot-pink);
+            box-shadow: 0 0 0 3px rgba(255, 77, 148, 0.1);
+        }
+
+        .favorite-filter-btn {
+            background: var(--white);
+            border: 2px solid rgba(255, 77, 148, 0.2);
+            border-radius: 60px;
+            padding: 14px 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            color: var(--text);
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .favorite-filter-btn i {
+            font-size: 1.2rem;
+            color: var(--hot-pink);
+            transition: transform 0.2s ease;
+        }
+
+        .favorite-filter-btn.active {
+            background: linear-gradient(135deg, var(--hot-pink), var(--purple));
+            border-color: transparent;
+            color: white;
+        }
+
+        .favorite-filter-btn.active i {
+            color: white;
+        }
+
+        .favorite-filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 77, 148, 0.2);
+        }
+
         /* ===== MAIN CONTENT ===== */
         main {
             flex: 1;
@@ -445,9 +522,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 48px;
+            margin-bottom: 24px;
             padding-bottom: 24px;
             border-bottom: 2px solid rgba(255, 77, 148, 0.1);
+            flex-wrap: wrap;
+            gap: 20px;
         }
 
         .page-header h1 {
@@ -530,6 +609,45 @@
             font-weight: 500;
         }
 
+        /* Favorite Button on Card */
+        .favorite-card-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1.6rem;
+            transition: all 0.2s ease;
+            padding: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto;
+            color: var(--purple);
+        }
+
+        .favorite-card-btn i {
+            transition: transform 0.2s cubic-bezier(0.34, 1.2, 0.64, 1);
+        }
+
+        .favorite-card-btn:hover i {
+            transform: scale(1.2);
+        }
+
+        .favorite-card-btn:active i {
+            transform: scale(0.9);
+        }
+
+        .favorite-card-btn .fa-heart {
+            color: var(--hot-pink);
+            filter: drop-shadow(0 2px 4px rgba(255, 77, 148, 0.3));
+            animation: heartBeat 0.3s ease;
+        }
+
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
         /* ===== EDITOR ===== */
         .editor-container {
             max-width: 900px; 
@@ -604,7 +722,7 @@
             border-radius: 20px; 
             padding: 32px; 
             outline: none; 
-            font-size: 1.25rem; /* Diubah dari 1.125rem ke 1.25rem */
+            font-size: 1.25rem;
             background: var(--gray-100);
             color: var(--text);
             line-height: 1.8;
@@ -1036,10 +1154,9 @@
             margin-bottom: 0.5em;
         }
 
-        /* PERUBAHAN: Warna bold/strong menjadi biru */
         .materi-content strong,
         .materi-content b {
-            color: var(--blue); /* Warna biru untuk teks bold */
+            color: var(--blue);
             font-weight: 700;
         }
 
@@ -1047,10 +1164,9 @@
             color: var(--purple);
         }
 
-        /* Warna bold di editor juga biru */
         #fEditor strong,
         #fEditor b {
-            color: var(--blue); /* Warna biru untuk teks bold di editor */
+            color: var(--blue);
         }
 
         /* ===== RESPONSIVE ===== */
@@ -1217,7 +1333,7 @@
             .rich-editor {
                 padding: 20px;
                 min-height: 300px;
-                font-size: 1.25rem; /* Tetap 1.25rem untuk mobile */
+                font-size: 1.25rem;
             }
             
             .file-upload-area {
@@ -1250,6 +1366,15 @@
             .delete-photo-btn {
                 padding: 10px 20px;
                 font-size: 0.9rem;
+            }
+
+            .search-filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .favorite-filter-btn {
+                justify-content: center;
             }
         }
 
@@ -1415,6 +1540,16 @@
                     <span>UPLOAD MATERI</span>
                 </button>
             </div>
+            <!-- SEARCH & FILTER BAR -->
+            <div class="search-filter-bar">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="homeSearchInput" class="search-input" placeholder="Cari materi berdasarkan judul atau konten..." autocomplete="off">
+                </div>
+                <button id="homeFavoriteFilterBtn" class="favorite-filter-btn" onclick="toggleFavoriteFilter()">
+                    <i class="fas fa-heart"></i> Favorit Saja
+                </button>
+            </div>
             <div class="grid" id="homeGrid">
                 <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
                     <div class="spinner"></div>
@@ -1433,6 +1568,16 @@
                 <button class="upload-btn-main" onclick="prepareAdd()">
                     <i class="fas fa-plus-circle"></i> 
                     <span>MATERI BARU</span>
+                </button>
+            </div>
+            <!-- SEARCH & FILTER BAR -->
+            <div class="search-filter-bar">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="manageSearchInput" class="search-input" placeholder="Cari materi berdasarkan judul atau konten..." autocomplete="off">
+                </div>
+                <button id="manageFavoriteFilterBtn" class="favorite-filter-btn" onclick="toggleFavoriteFilter()">
+                    <i class="fas fa-heart"></i> Favorit Saja
                 </button>
             </div>
             <div class="grid" id="adminGrid"></div>
@@ -1556,6 +1701,11 @@
         let isAdmin = false;
         let currentEditId = null;
         
+        // SEARCH & FAVORITE FEATURE
+        let searchQuery = '';
+        let showFavoritesOnly = false;
+        let favorites = new Set(); // store material IDs
+        
         // ===== LOCALSTORAGE OPTIMIZATION =====
         function cleanDataForStorage(data) {
             return data.map(item => {
@@ -1621,6 +1771,113 @@
             }
         }
         
+        // ===== FAVORITE FUNCTIONS =====
+        function loadFavorites() {
+            try {
+                const stored = localStorage.getItem('k3_favorites');
+                if (stored) {
+                    const favArray = JSON.parse(stored);
+                    favorites = new Set(favArray);
+                } else {
+                    favorites = new Set();
+                }
+                console.log('❤️ Loaded favorites:', Array.from(favorites));
+            } catch (error) {
+                console.error('Failed to load favorites:', error);
+                favorites = new Set();
+            }
+        }
+        
+        function saveFavorites() {
+            try {
+                const favArray = Array.from(favorites);
+                localStorage.setItem('k3_favorites', JSON.stringify(favArray));
+                console.log('💖 Favorites saved:', favArray);
+            } catch (error) {
+                console.error('Failed to save favorites:', error);
+            }
+        }
+        
+        function isFavorite(id) {
+            return favorites.has(id);
+        }
+        
+        function toggleFavorite(id, event) {
+            if (event) event.stopPropagation();
+            if (favorites.has(id)) {
+                favorites.delete(id);
+                showNotification('💔 Dihapus dari favorit', 'info');
+            } else {
+                favorites.add(id);
+                showNotification('💖 Ditambahkan ke favorit!', 'success');
+                // Add cute animation class
+                const heartIcon = event?.target?.closest('.favorite-card-btn')?.querySelector('i');
+                if (heartIcon) {
+                    heartIcon.style.animation = 'none';
+                    heartIcon.offsetHeight; // trigger reflow
+                    heartIcon.style.animation = 'heartBeat 0.3s ease';
+                    setTimeout(() => { if(heartIcon) heartIcon.style.animation = ''; }, 300);
+                }
+            }
+            saveFavorites();
+            render(); // re-render to update heart icons and filtered list
+        }
+        
+        // ===== SEARCH & FILTER =====
+        function getFilteredMaterials() {
+            let filtered = [...db];
+            
+            // Apply search query
+            if (searchQuery.trim() !== '') {
+                const query = searchQuery.toLowerCase();
+                filtered = filtered.filter(item => 
+                    item.title.toLowerCase().includes(query) || 
+                    (item.content && item.content.toLowerCase().includes(query))
+                );
+            }
+            
+            // Apply favorites filter
+            if (showFavoritesOnly) {
+                filtered = filtered.filter(item => isFavorite(item.id));
+            }
+            
+            return filtered;
+        }
+        
+        function updateSearch(value) {
+            searchQuery = value;
+            // Sync both search inputs
+            const homeInput = document.getElementById('homeSearchInput');
+            const manageInput = document.getElementById('manageSearchInput');
+            if (homeInput && homeInput.value !== searchQuery) homeInput.value = searchQuery;
+            if (manageInput && manageInput.value !== searchQuery) manageInput.value = searchQuery;
+            render();
+        }
+        
+        function toggleFavoriteFilter() {
+            showFavoritesOnly = !showFavoritesOnly;
+            updateFavoriteFilterButtons();
+            render();
+            if (showFavoritesOnly) {
+                showNotification('🌟 Menampilkan materi favorit saja', 'info');
+            } else {
+                showNotification('📚 Menampilkan semua materi', 'info');
+            }
+        }
+        
+        function updateFavoriteFilterButtons() {
+            const homeBtn = document.getElementById('homeFavoriteFilterBtn');
+            const manageBtn = document.getElementById('manageFavoriteFilterBtn');
+            if (homeBtn) {
+                if (showFavoritesOnly) homeBtn.classList.add('active');
+                else homeBtn.classList.remove('active');
+            }
+            if (manageBtn) {
+                if (showFavoritesOnly) manageBtn.classList.add('active');
+                else manageBtn.classList.remove('active');
+            }
+        }
+        
         // ===== RANDOM IMAGE GENERATOR =====
         function getRandomK3Image() {
             const images = [
@@ -1679,6 +1936,8 @@
             updateFABVisibility(viewId);
             updateHomeUploadButton();
             document.querySelector('main').scrollTop = 0;
+            // re-render to ensure grid updates
+            render();
         }
         
         function updateFABVisibility(currentView) {
@@ -1817,21 +2076,14 @@
             }
         }
         
-        // ===== NEW FUNCTION: REMOVE PHOTO =====
         function removePhoto() {
             if(confirm('Hapus foto yang sudah dipilih?')) {
-                // Reset file input
                 document.getElementById('fFile').value = '';
-                
-                // Hide preview
                 document.getElementById('filePreview').style.display = 'none';
-                
-                // Reset upload area to default
                 document.getElementById('uploadArea').innerHTML = 
                     `<i class="fas fa-cloud-upload-alt"></i>
                      <h3>Upload Gambar Utama</h3>
                      <p>Seret atau klik untuk mengunggah file gambar (JPG, PNG, GIF, Max 10MB)</p>`;
-                
                 showNotification('🗑️ Foto berhasil dihapus!', 'success');
             }
         }
@@ -2057,15 +2309,13 @@
                 const now = new Date().toISOString();
                 const oldItem = currentEditId ? db.find(i => i.id === currentEditId) : null;
                 
-                // PERBAIKAN: Jika tidak ada gambar baru dan sedang edit, pertahankan gambar lama
-                // Jika tidak ada gambar lama dan tidak ada gambar baru, gunakan gambar random
                 let imageToUse;
                 if (img) {
-                    imageToUse = img; // Gambar baru diupload
+                    imageToUse = img;
                 } else if (oldItem && oldItem.image) {
-                    imageToUse = oldItem.image; // Pertahankan gambar lama saat edit
+                    imageToUse = oldItem.image;
                 } else {
-                    imageToUse = getRandomK3Image(); // Gambar random hanya untuk materi baru tanpa gambar
+                    imageToUse = getRandomK3Image();
                 }
 
                 const payload = {
@@ -2129,26 +2379,37 @@
         }
         
         function render() {
-            console.log('🎨 Rendering', db.length, 'items');
+            console.log('🎨 Rendering', db.length, 'items with search/favorite');
+            const filteredItems = getFilteredMaterials();
             
             const hG = document.getElementById('homeGrid');
             const aG = document.getElementById('adminGrid');
-            hG.innerHTML = aG.innerHTML = '';
+            if (!hG || !aG) return;
+            hG.innerHTML = '';
+            aG.innerHTML = '';
         
-            if(!Array.isArray(db) || db.length === 0) {
-                showEmptyState();
-                if(isAdmin) {
-                    document.getElementById('adminGrid').innerHTML = hG.innerHTML;
-                }
+            if(!Array.isArray(filteredItems) || filteredItems.length === 0) {
+                const emptyMessage = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
+                        <i class="fas fa-heart-broken" style="font-size: 4rem; color: var(--hot-pink); margin-bottom: 24px; opacity: 0.6;"></i>
+                        <h3 style="color: var(--hot-pink); margin-bottom: 12px;">Tidak ada materi</h3>
+                        <p style="color: var(--text);">${searchQuery ? 'Tidak ditemukan materi yang sesuai dengan pencarian.' : (showFavoritesOnly ? 'Belum ada materi yang ditandai favorit. Klik hati ❤️ pada materi untuk menambahkannya ke favorit!' : 'Belum ada materi tersedia.')}</p>
+                    </div>
+                `;
+                hG.innerHTML = emptyMessage;
+                if(isAdmin) aG.innerHTML = emptyMessage;
                 return;
             }
         
-            db.forEach(item => {
+            filteredItems.forEach(item => {
                 const date = new Date(item.createdAt).toLocaleDateString('id-ID', {
                     day: 'numeric',
                     month: 'long',
                     year: 'numeric'
                 });
+                
+                const isFav = isFavorite(item.id);
+                const heartIcon = isFav ? '<i class="fas fa-heart"></i>' : '<i class="far fa-heart"></i>';
                 
                 const cardHtml = `
                     <div class="card" onclick="openDetail(${item.id})">
@@ -2157,8 +2418,13 @@
                              loading="lazy"
                              onerror="this.src='${getRandomK3Image()}'">
                         <div class="card-info">
-                            <h3>${item.title}</h3>
-                            <div class="card-date">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <h3 style="margin-bottom: 0;">${item.title}</h3>
+                                <button class="favorite-card-btn" onclick="toggleFavorite(${item.id}, event)" title="${isFav ? 'Hapus dari favorit' : 'Tambahkan ke favorit'}">
+                                    ${heartIcon}
+                                </button>
+                            </div>
+                            <div class="card-date" style="margin-top: 12px;">
                                 <i class="far fa-calendar"></i> ${date}
                             </div>
                             ${isAdmin ? `
@@ -2256,6 +2522,12 @@
         async function deleteItem(id) {
             if(!confirm('Hapus materi ini?\n\nTindakan ini tidak dapat dibatalkan.')) return;
             
+            // Remove from favorites if exists
+            if (favorites.has(id)) {
+                favorites.delete(id);
+                saveFavorites();
+            }
+            
             const supabaseResult = await deleteFromSupabase(id);
             
             if (supabaseResult.success) {
@@ -2332,6 +2604,7 @@
                 try {
                     localStorage.removeItem('k3_blossom_db');
                     localStorage.removeItem('k3_theme');
+                    localStorage.removeItem('k3_favorites');
                     showNotification('🧹 Data lokal dibersihkan!', 'success');
                     
                     loadFromSupabase();
@@ -2346,6 +2619,7 @@
             console.log('🚀 Initializing application...');
             
             loadTheme();
+            loadFavorites();
             
             const supabaseInitialized = initSupabase();
             
@@ -2358,6 +2632,18 @@
             console.log('✅ Application initialized');
             
             await loadFromSupabase();
+            
+            // Setup search inputs
+            const homeSearch = document.getElementById('homeSearchInput');
+            const manageSearch = document.getElementById('manageSearchInput');
+            if (homeSearch) {
+                homeSearch.addEventListener('input', (e) => updateSearch(e.target.value));
+            }
+            if (manageSearch) {
+                manageSearch.addEventListener('input', (e) => updateSearch(e.target.value));
+            }
+            
+            updateFavoriteFilterButtons();
             
             const style = document.createElement('style');
             style.textContent = `
@@ -2399,7 +2685,7 @@
         
         document.addEventListener('DOMContentLoaded', init);
         
-        // Untuk debugging di console
+        // For debugging
         window.clearStorage = clearLocalStorage;
         window.getData = () => db;
         window.getLocalStorageSize = () => {
